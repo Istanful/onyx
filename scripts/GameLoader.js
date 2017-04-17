@@ -1,17 +1,17 @@
 // Load all scripts, firing callback when each script is done
-function LoadScripts(scripts) {
+function loadScripts(scripts) {
   var i = 0;
   var callback = function() {
     if (i++ < scripts.length - 1) {
-      LoadScript(scripts[i], callback);
+      loadScript(scripts[i], callback);
     }
   }
   // Load first script
-  LoadScript(scripts[0], callback);
+  loadScript(scripts[0], callback);
 }
 
 // Load script and fire callback when done
-function LoadScript(fileName, callback) {
+function loadScript(fileName, callback) {
   let script = document.createElement("script");
   script.type = "text/javascript";
 
@@ -43,4 +43,4 @@ scripts = [
   "GameController.js"
 ];
 
-LoadScripts(scripts);
+loadScripts(scripts);
