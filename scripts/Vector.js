@@ -15,4 +15,10 @@ class Vector {
   static get zero() {
     return new Vector(0, 0);
   }
+
+  get toRadians() {
+    let multiplier = Math.PI / 180;
+    return new Vector(this.x * multiplier,
+                      this.y * multiplier);
+  }
 }

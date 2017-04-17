@@ -3,7 +3,7 @@ class Rotation extends Movement {
     super(startingAngle, targetAngle, duration, easingType);
   }
 
-  nextAngle() {
-    return super.nextPosition();
+  get nextAngle() {
+    return super.nextPosition;
   }
 }

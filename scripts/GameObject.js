@@ -20,13 +20,13 @@ class GameObject {
 
   move() {
     if (this.movement) {
-      this.position = this.movement.nextPosition();
+      this.position = this.movement.nextPosition;
     }
   }
 
   rotate() {
     if (this.rotation) {
-      this.angle = this.rotation.nextAngle();
+      this.angle = this.rotation.nextAngle;
     }
   }
 
@@ -54,7 +54,8 @@ class GameObject {
 
     // Rotate
     context.translate(this.rotationPoint.x, this.rotationPoint.y);
-    context.rotate(this.rotation.nextAngle().x * (Math.PI / 180));
+    context.rotate(this.rotation.nextAngle.toRadians.x,
+                   this.rotation.nextAngle.toRadians.y);
 
     context.strokeRect(this.position.x - this.rotationPoint.x,
                      this.position.y - this.rotationPoint.y,

@@ -12,13 +12,13 @@ class Movement {
   }
 
   // The next position calculated based on current time
-  nextPosition() {
+  get nextPosition() {
     if (this.done) { return this.targetPosition }
-    return Vector.add(this.startingPosition, this.nextStep());
+    return Vector.add(this.startingPosition, this.nextStep);
   }
 
   // Step depicts the next offset to be added to the startingPosition
-  nextStep() {
+  get nextStep() {
     let multiplier = this.multiplier;
     return new Vector(
       this.distance.x * multiplier,
