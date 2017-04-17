@@ -41,6 +41,7 @@ scripts = [
   "Vector.js",
   "Game.js",
   "Movement.js",
+  "Rotation.js",
   "GameController.js"
 ];
 

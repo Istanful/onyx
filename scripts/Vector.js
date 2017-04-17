@@ -11,4 +11,8 @@ class Vector {
   static subtract(first, second) {
     return new Vector(first.x - second.x, first.y - second.y);
   }
+
+  static get zero() {
+    return new Vector(0, 0);
+  }
 }
