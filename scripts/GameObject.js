@@ -2,12 +2,18 @@ class GameObject {
   constructor(name, position) {
     this.name = name;
     this.position = position;
-    this.velocity = new Vector(1, 2);
   }
 
   update() {
-      this.position.x += this.velocity.x;
-      this.position.y += this.velocity.y;
+    this.move();
+  }
+
+  move() {
+    if (this.movement) { this.position = this.movement.nextPosition(); }
+  }
+
+  moveTo(target, duration, easingType = "easeInOut") {
+    this.movement = new Movement(this.position, target, duration, easingType);
   }
 
   draw(context) {
