@@ -14,28 +14,16 @@ class GameObject {
   }
 
   update() {
-    this.move();
-    this.rotate();
-  }
-
-  move() {
-    if (this.movement) {
-      this.position = this.movement.nextPosition;
-    }
-  }
-
-  rotate() {
-    if (this.rotation) {
-      this.angle = this.rotation.nextAngle;
-    }
+    this.position = this.movement ? this.movement.nextValue : Vector.zero;
+    this.angle = this.rotation ? this.rotation.nextValue : Vector.zero;
   }
 
   moveTo(target, duration, easingType = "easeInOut") {
-    this.movement = new Movement(this.position, target, duration, easingType);
+    this.movement = new VectorAnimation(this.position, target, duration, easingType);
   }
 
   rotateTo(target, duration, easingType = "easeInOut") {
-    this.rotation = new Rotation(this.angle, target, duration, easingType);
+    this.rotation = new VectorAnimation(this.angle, target, duration, easingType);
   }
 
   // The point from where to rotate the object
@@ -54,8 +42,8 @@ class GameObject {
 
     // Rotate
     context.translate(this.rotationPoint.x, this.rotationPoint.y);
-    context.rotate(this.rotation.nextAngle.toRadians.x,
-                   this.rotation.nextAngle.toRadians.y);
+    context.rotate(this.angle.toRadians.x,
+                   this.angle.toRadians.x);
 
     context.strokeRect(this.position.x - this.rotationPoint.x,
                      this.position.y - this.rotationPoint.y,
