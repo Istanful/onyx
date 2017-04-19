@@ -82,7 +82,7 @@ class GameObject {
     // Rotate
     context.translate(rotationPoint.x, rotationPoint.y);
     context.rotate(this.angle.toRadians.x,
-                   this.angle.toRadians.x);
+                   this.angle.toRadians.y);
 
     context.drawImage(this.graphic,
                       position.x - rotationPoint.x,
