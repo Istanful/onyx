@@ -12,13 +12,26 @@ class Vector {
     return new Vector(first.x - second.x, first.y - second.y);
   }
 
+  static multiply(first, second) {
+	return new Vector(first.x * second.x, first.y * second.y);
+  }
+
   static get zero() {
     return new Vector(0, 0);
+  }
+
+  static withValue(value) {
+	  return new Vector(value, value);
   }
 
   get toRadians() {
     let multiplier = Math.PI / 180;
     return new Vector(this.x * multiplier,
                       this.y * multiplier);
+  }
+
+  // Returns the same vector scaled to game space
+  get scaled() {
+	   return Vector.multiply(this, Vector.withValue(game.scale));
   }
 }

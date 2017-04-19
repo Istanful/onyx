@@ -9,13 +9,16 @@ class GameObject {
     this.origin = new Vector(0.5, 0.5);
 
     // TODO change this
-    this.width = 100;
-    this.height = 100;
+	  this.size = new Vector(100, 100);
   }
 
   update() {
-    this.position = this.movement ? this.movement.nextValue : Vector.zero;
-    this.angle = this.rotation ? this.rotation.nextValue : Vector.zero;
+    if (this.sizeChange)
+      this.size = this.sizeChange.nextValue;
+    if (this.movement)
+      this.position = this.movement.nextValue;
+    if (this.rotation)
+      this.angle = this.rotation.nextValue;
   }
 
   moveTo(target, duration, easingType = "easeInOut") {
@@ -26,32 +29,42 @@ class GameObject {
     this.rotation = new VectorAnimation(this.angle, target, duration, easingType);
   }
 
+  changeSizeTo(target, duration, easingType = "easeInOut") {
+	   this.sizeChange = new VectorAnimation(this.size, target, duration, easingType);
+  }
+
   // The point from where to rotate the object
   get rotationPoint() {
-    let x = this.position.x;
-    let y = this.position.y;
-
-    return new Vector(x + this.width * this.origin.x,
-                      y + this.height * this.origin.y)
+    return Vector.add(
+      this.position,
+      Vector.multiply(this.size, this.origin)
+    );
   }
 
   draw(canvas) {
     let context = canvas.getContext("2d");
+
+    // Use scaled position and size
+    let size = this.size.scaled;
+    let position = this.position.scaled;
+    let rotationPoint = this.rotationPoint.scaled;
+
     context.save();
     context.strokeStyle = "black";
 
     // Rotate
-    context.translate(this.rotationPoint.x, this.rotationPoint.y);
+    context.translate(rotationPoint.x, rotationPoint.y);
     context.rotate(this.angle.toRadians.x,
                    this.angle.toRadians.x);
 
-    context.strokeRect(this.position.x - this.rotationPoint.x,
-                     this.position.y - this.rotationPoint.y,
-                     this.width,
-                     this.height);
+    // Draw graphic
+    context.strokeRect(position.x - rotationPoint.x,
+                     position.y - rotationPoint.y,
+                     size.x,
+                     size.y);
 
     // Rotate back
-    context.translate(this.rotationPoint.x, this.rotationPoint.y);
+    context.translate(rotationPoint.x, rotationPoint.y);
     context.restore();
   }
 }
