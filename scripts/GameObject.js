@@ -1,15 +1,14 @@
 class GameObject {
-  constructor(name, position = Vector.zero, angle = Vector.zero) {
+  constructor(name, graphic, position = Vector.zero, angle = Vector.zero) {
     this.name = name;
     this.position = position;
     this.angle = angle;
+    this.graphic = graphic;
 
     // The rotation origin. Expressed in 0 to 1 in each dimension.
     // For example (0.5, 0.5) is in the middle.
     this.origin = new Vector(0.5, 0.5);
-
-    // TODO change this
-	  this.size = new Vector(100, 100);
+	  this.size = new Vector(this.graphic.width, this.graphic.height);
   }
 
   update() {
@@ -57,14 +56,13 @@ class GameObject {
     context.rotate(this.angle.toRadians.x,
                    this.angle.toRadians.x);
 
-    // Draw graphic
-    context.strokeRect(position.x - rotationPoint.x,
-                     position.y - rotationPoint.y,
-                     size.x,
-                     size.y);
 
-    // Rotate back
-    context.translate(rotationPoint.x, rotationPoint.y);
+    context.drawImage(this.graphic,
+                      position.x - rotationPoint.x,
+                      position.y - rotationPoint.y,
+                      size.x,
+                      size.y);
+
     context.restore();
   }
 }

@@ -54,11 +54,15 @@ function loadImages(images, callback, dir = "graphics") {
     let img = new Image();
     img.addEventListener("load", onImageLoad);
     img.src = dir + "/" + images[i];
-    loadedImages.push(img);
+    resources[pathToName(images[i])] = img;
   }
 }
 
-let loadedImages = [];
+function pathToName(path) {
+  return path.replace(/\.[^/.]+$/, "");
+}
+
+let resources = {};
 let images = ["cannon.svg", "tower-cogwheel.svg", "tower.svg"];
 let scripts = [
   "GameObject.js",
