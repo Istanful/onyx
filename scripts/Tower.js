@@ -24,4 +24,12 @@ class Tower extends GameObject {
     this.addChild(cogwheel);
     this.addChild(cannon);
   }
+
+  update() {
+    super.update();
+  }
+
+  draw() {
+    super.draw();
+  }
 }

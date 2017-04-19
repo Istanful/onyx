@@ -11,8 +11,12 @@ class GameObject {
     // The rotation origin. Expressed in 0 to 1 in each dimension.
     // For example (0.5, 0.5) is in the middle.
     this.origin = new Vector(0.5, 0.5);
+
+    // TODO : Fix this
     if (this.graphic)
-	   this.size = new Vector(this.graphic.width, this.graphic.height);
+	    this.size = new Vector(this.graphic.width, this.graphic.height);
+    else
+      this.size = Vector.zero;
   }
 
   update() {
@@ -55,6 +59,22 @@ class GameObject {
     );
   }
 
+  // The point from which to rotate around
+  // after the parent is rotated
+  get relativeRotationPoint() {
+    if (!this.parent) { return this.rotationPoint; }
+    let distanceFromParentY = this.rotationPoint.y - this.parent.relativeRotationPoint.y;
+    let parentAngle = this.parent.angle;
+    let delta = Vector.multiply(
+      Vector.withValue(distanceFromParentY),
+      new Vector(
+        Math.cos(parentAngle.toRadians.x),
+        Math.sin(parentAngle.toRadians.x)
+      )
+    );
+    return Vector.add(this.rotationPoint, delta);
+  }
+
   get position() {
     let parentPosition = this.parent ? this.parent.position : Vector.zero;
     return Vector.add(parentPosition, this.localPosition);
@@ -74,15 +94,12 @@ class GameObject {
     // Use scaled localPosition and size
     let size = this.size.scaled;
     let position = this.position.scaled;
-    let rotationPoint = this.rotationPoint.scaled;
+    let rotationPoint = this.relativeRotationPoint.scaled;
 
     context.save();
     context.strokeStyle = "black";
 
-    // Rotate
-    context.translate(rotationPoint.x, rotationPoint.y);
-    context.rotate(this.angle.toRadians.x,
-                   this.angle.toRadians.y);
+    this.rotateContext();
 
     context.drawImage(this.graphic,
                       position.x - rotationPoint.x,
@@ -91,6 +108,25 @@ class GameObject {
                       size.y);
 
     context.restore();
+  }
+
+  rotateContext() {
+    let context = game.canvas.getContext("2d");
+    let rotationPoint = this.relativeRotationPoint.scaled;
+
+    // If we have a parent we must first rotate around that origin point
+    if (this.parent) {
+      context.translate(this.parent.relativeRotationPoint.x,
+                        this.parent.relativeRotationPoint.y);
+      context.rotate(this.parent.angle.toRadians.x, this.parent.angle.toRadians.y);
+      context.translate(-this.parent.relativeRotationPoint.x,
+                        -this.parent.relativeRotationPoint.y);
+    }
+
+    // And after that rotate around this ones
+    context.translate(rotationPoint.x, rotationPoint.y);
+    context.rotate(this.angle.toRadians.x,
+                   this.angle.toRadians.y);
   }
 
   drawChildren() {
