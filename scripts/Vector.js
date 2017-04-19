@@ -34,4 +34,9 @@ class Vector {
   get scaled() {
 	   return Vector.multiply(this, Vector.withValue(game.scale));
   }
+
+  // Returns the coordinates with the origin in the bottom left
+  get invertedY() {
+    return new Vector(this.x, 900 - this.y);
+  }
 }

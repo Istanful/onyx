@@ -35,7 +35,7 @@ class Game {
     // Make canvas full screen
     let height = this.canvas.height = window.innerHeight;
     let width = this.canvas.width = window.innerWidth;
-	this.scale = height / 900;
+    this.scale = height / 1000;
 
     // Fill background
     ctx.fillStyle = "#2F567D";

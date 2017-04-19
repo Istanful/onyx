@@ -11,7 +11,8 @@ class GameObject {
     // The rotation origin. Expressed in 0 to 1 in each dimension.
     // For example (0.5, 0.5) is in the middle.
     this.origin = new Vector(0.5, 0.5);
-	  this.size = new Vector(this.graphic.width, this.graphic.height);
+    if (this.graphic)
+	   this.size = new Vector(this.graphic.width, this.graphic.height);
   }
 
   update() {
@@ -61,6 +62,12 @@ class GameObject {
 
   draw() {
     this.drawChildren();
+    this.drawThis();
+  }
+
+  drawThis() {
+    // If this is a game object without a graphic don't draw
+    if (!this.graphic) { return; }
 
     let context = game.canvas.getContext("2d");
 
@@ -95,5 +102,12 @@ class GameObject {
   addChild(gameObject) {
     this.children.push(gameObject);
     gameObject.parent = this;
+  }
+
+  findChild(name) {
+    for (let i = 0; i < this.children.length; i++) {
+      if (this.children[i].name == name)
+        return this.children[i];
+    }
   }
 }
