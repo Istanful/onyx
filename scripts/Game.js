@@ -25,7 +25,7 @@ class Game {
   draw() {
     this.clearCanvas();
     for (let i = 0; i < this.gameObjects.length; i++) {
-      this.gameObjects[i].draw(this.canvas);
+      this.gameObjects[i].draw();
     }
   }
 

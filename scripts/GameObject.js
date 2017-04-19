@@ -1,9 +1,12 @@
 class GameObject {
-  constructor(name, graphic, position = Vector.zero, angle = Vector.zero) {
+  constructor(name, graphic, localPosition = Vector.zero, angle = Vector.zero) {
     this.name = name;
-    this.position = position;
+    this.localPosition = localPosition;
     this.angle = angle;
     this.graphic = graphic;
+
+    // The children associated with this game object
+    this.children = [];
 
     // The rotation origin. Expressed in 0 to 1 in each dimension.
     // For example (0.5, 0.5) is in the middle.
@@ -12,16 +15,27 @@ class GameObject {
   }
 
   update() {
+    this.updateChildren();
+    this.updateProperties();
+  }
+
+  updateChildren() {
+    for (let i = 0; i < this.children.length; i++) {
+      this.children[i].update();
+    }
+  }
+
+  updateProperties() {
     if (this.sizeChange)
       this.size = this.sizeChange.nextValue;
     if (this.movement)
-      this.position = this.movement.nextValue;
+      this.localPosition = this.movement.nextValue;
     if (this.rotation)
       this.angle = this.rotation.nextValue;
   }
 
   moveTo(target, duration, easingType = "easeInOut") {
-    this.movement = new VectorAnimation(this.position, target, duration, easingType);
+    this.movement = new VectorAnimation(this.localPosition, target, duration, easingType);
   }
 
   rotateTo(target, duration, easingType = "easeInOut") {
@@ -29,7 +43,7 @@ class GameObject {
   }
 
   changeSizeTo(target, duration, easingType = "easeInOut") {
-	   this.sizeChange = new VectorAnimation(this.size, target, duration, easingType);
+	  this.sizeChange = new VectorAnimation(this.size, target, duration, easingType);
   }
 
   // The point from where to rotate the object
@@ -40,10 +54,17 @@ class GameObject {
     );
   }
 
-  draw(canvas) {
-    let context = canvas.getContext("2d");
+  get position() {
+    let parentPosition = this.parent ? this.parent.position : Vector.zero;
+    return Vector.add(parentPosition, this.localPosition);
+  }
 
-    // Use scaled position and size
+  draw() {
+    this.drawChildren();
+
+    let context = game.canvas.getContext("2d");
+
+    // Use scaled localPosition and size
     let size = this.size.scaled;
     let position = this.position.scaled;
     let rotationPoint = this.rotationPoint.scaled;
@@ -56,7 +77,6 @@ class GameObject {
     context.rotate(this.angle.toRadians.x,
                    this.angle.toRadians.x);
 
-
     context.drawImage(this.graphic,
                       position.x - rotationPoint.x,
                       position.y - rotationPoint.y,
@@ -64,5 +84,16 @@ class GameObject {
                       size.y);
 
     context.restore();
+  }
+
+  drawChildren() {
+    for (let i = 0; i < this.children.length; i++) {
+      this.children[i].draw();
+    }
+  }
+
+  addChild(gameObject) {
+    this.children.push(gameObject);
+    gameObject.parent = this;
   }
 }

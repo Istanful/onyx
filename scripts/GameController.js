@@ -1,11 +1,9 @@
 let game = new Game();
-let gs = [];
 let easeTypes = ["linear", "easeIn", "easeOut", "easeInOut"];
-console.log(resources)
-for (let i = 0; i < 4; i++) {
-  gs.push(new GameObject(i, resources.cannon, new Vector(0, i * resources.cannon.height)));
-  gs[i].rotateTo(new Vector(360, 0), 2000, easeTypes[i]);
-  gs[i].moveTo(new Vector(100, 200), 2000);
-  game.gameObjects.push(gs[i]);
-}
+let tower = new GameObject("Tower", resources.tower);
+//tower.moveTo(new Vector(100, 100), 2000);
+let cannon = new GameObject("Cannon", resources.cannon);
+tower.rotateTo(new Vector(90, 0), 2000);
+tower.addChild(cannon)
+game.gameObjects.push(tower);
 game.start();
