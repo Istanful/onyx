@@ -9,7 +9,7 @@ class Tower extends GameObject {
 
     let cogwheel = new GameObject(
       "Cogwheel",
-      resources.images["tower-cogwheel"],
+      resources.images.towerCogwheel,
       new Vector(37, -64)
     );
 

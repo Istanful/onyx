@@ -65,7 +65,17 @@ function pathToName(path) {
 let resources = {
   images: {}
 };
-let images = ["cannon.svg", "tower-cogwheel.svg", "tower.svg"];
+let images = [
+  "cannon.svg",
+  "towerCogwheel.svg",
+  "tower.svg",
+  "minionCalve.svg",
+  "minionThigh.svg",
+  "minionFoot.svg",
+  "minionBody.svg",
+  "minionArm.svg"
+];
+
 let scripts = [
   "GameObject.js",
   "Number.js",
