@@ -1,5 +1,5 @@
 class GameObject {
-  constructor(name, graphic, localPosition = Vector.zero, angle = Vector.zero) {
+  constructor(name, graphic, localPosition = Vector.zero, angle = 0) {
     this.name = name;
     this.localPosition = localPosition;
     this.angle = angle;
@@ -44,7 +44,7 @@ class GameObject {
   }
 
   rotateTo(target, duration, easingType = "easeInOut") {
-    this.rotation = new VectorAnimation(this.angle, target, duration, easingType);
+    this.rotation = new Animation(this.angle, target, duration, easingType);
   }
 
   changeSizeTo(target, duration, easingType = "easeInOut") {
@@ -64,12 +64,12 @@ class GameObject {
   get relativeRotationPoint() {
     if (!this.parent) { return this.rotationPoint; }
     let distanceFromParentY = this.rotationPoint.y - this.parent.relativeRotationPoint.y;
-    let parentAngle = Vector.subtract(Vector.withValue(90), this.parent.angle);
+    let parentAngle = 90 - this.parent.angle;
     let delta = Vector.multiply(
       Vector.withValue(distanceFromParentY),
       new Vector(
-        Math.cos(parentAngle.toRadians.x),
-        Math.sin(parentAngle.toRadians.x)
+        Math.cos(parentAngle.toRadians()),
+        Math.sin(parentAngle.toRadians())
       )
     );
     return Vector.add(this.rotationPoint, delta);
@@ -129,7 +129,7 @@ class GameObject {
     let rotationPoint = parent.relativeRotationPoint.scaled;
     context.translate(rotationPoint.x,
                       rotationPoint.y);
-    context.rotate(parent.angle.toRadians.x);
+    context.rotate(parent.angle.toRadians());
     context.translate(-rotationPoint.x,
                       -rotationPoint.y);
   }
@@ -146,12 +146,13 @@ class GameObject {
     let context = game.canvas.getContext("2d");
     let rotationPoint = this.relativeRotationPoint.scaled;
 
-    // If we have a parent we must first rotate around that origin point
+    // We must rotate the context based on every
+    // parent first.
     this.recursivelyInheritAngle();
 
     // And after that rotate around this ones
     context.translate(rotationPoint.x, rotationPoint.y);
-    context.rotate(this.angle.toRadians.x);
+    context.rotate(this.angle.toRadians());
   }
 
   drawChildren() {

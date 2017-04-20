@@ -24,12 +24,6 @@ class Vector {
 	  return new Vector(value, value);
   }
 
-  get toRadians() {
-    let multiplier = Math.PI / 180;
-    return new Vector(this.x * multiplier,
-                      this.y * multiplier);
-  }
-
   // Returns the same vector scaled to game space
   get scaled() {
 	   return Vector.multiply(this, Vector.withValue(game.scale));

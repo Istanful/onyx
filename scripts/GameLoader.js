@@ -68,6 +68,7 @@ let resources = {
 let images = ["cannon.svg", "tower-cogwheel.svg", "tower.svg"];
 let scripts = [
   "GameObject.js",
+  "Number.js",
   "Tower.js",
   "Enemy.js",
   "Vector.js",
