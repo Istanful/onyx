@@ -25,7 +25,7 @@ class Game {
   draw() {
     this.clearCanvas();
     for (let i = 0; i < this.gameObjects.length; i++) {
-      this.gameObjects[i].draw(this.context);
+      this.gameObjects[i].draw();
     }
   }
 
@@ -35,6 +35,7 @@ class Game {
     // Make canvas full screen
     let height = this.canvas.height = window.innerHeight;
     let width = this.canvas.width = window.innerWidth;
+    this.scale = height / 1000;
 
     // Fill background
     ctx.fillStyle = "#2F567D";

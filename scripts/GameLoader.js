@@ -36,12 +36,46 @@ function loadScript(fileName, callback) {
   document.getElementsByTagName("head")[0].append(script);
 }
 
-scripts = [
+// Load all images and execute callback when done
+function loadImages(images, callback, dir = "graphics") {
+  let loadedCount = 0;
+
+  function onImageLoad() {
+    loadedCount++;
+
+    // If all images loaded execute callback
+    if (loadedCount == images.length) {
+      callback();
+    }
+  }
+
+  // Load all images and subscribe load event to onImageLoad
+  for (let i = 0; i < images.length; i++) {
+    let img = new Image();
+    img.addEventListener("load", onImageLoad);
+    img.src = dir + "/" + images[i];
+    resources.images[pathToName(images[i])] = img;
+  }
+}
+
+function pathToName(path) {
+  return path.replace(/\.[^/.]+$/, "");
+}
+
+let resources = {
+  images: {}
+};
+let images = ["cannon.svg", "tower-cogwheel.svg", "tower.svg"];
+let scripts = [
   "GameObject.js",
+  "Number.js",
+  "Tower.js",
+  "Enemy.js",
   "Vector.js",
   "Game.js",
-  "Movement.js",
+  "VectorAnimation.js",
+  "Animation.js",
   "GameController.js"
 ];
 
-loadScripts(scripts);
+loadImages(images, function() { loadScripts(scripts) });

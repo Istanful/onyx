@@ -1,9 +1,9 @@
-class Movement {
-  constructor(startingPosition, targetPosition, duration, easingType = "easeInOut") {
+class VectorAnimation {
+  constructor(startValue, targetValue, duration, easingType = "easeInOut") {
     // Distance related
-    this.startingPosition = startingPosition;
-    this.targetPosition = targetPosition;
-    this.distance = Vector.subtract(targetPosition, startingPosition);
+    this.startValue = startValue;
+    this.targetValue = targetValue;
+    this.distance = Vector.subtract(targetValue, startValue);
 
     // Timing
     this.duration = duration;
@@ -12,13 +12,13 @@ class Movement {
   }
 
   // The next position calculated based on current time
-  nextPosition() {
-    if (this.done) { return this.targetPosition }
-    return Vector.add(this.startingPosition, this.nextStep());
+  get nextValue() {
+    if (this.done) { return this.targetValue }
+    return Vector.add(this.startValue, this.nextStep);
   }
 
-  // Step depicts the next offset to be added to the startingPosition
-  nextStep() {
+  // Step depicts the next offset to be added to the startValue
+  get nextStep() {
     let multiplier = this.multiplier;
     return new Vector(
       this.distance.x * multiplier,

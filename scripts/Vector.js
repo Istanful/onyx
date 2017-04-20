@@ -11,4 +11,26 @@ class Vector {
   static subtract(first, second) {
     return new Vector(first.x - second.x, first.y - second.y);
   }
+
+  static multiply(first, second) {
+	return new Vector(first.x * second.x, first.y * second.y);
+  }
+
+  static get zero() {
+    return new Vector(0, 0);
+  }
+
+  static withValue(value) {
+	  return new Vector(value, value);
+  }
+
+  // Returns the same vector scaled to game space
+  get scaled() {
+	   return Vector.multiply(this, Vector.withValue(game.scale));
+  }
+
+  // Returns the coordinates with the origin in the bottom left
+  get invertedY() {
+    return new Vector(this.x, 900 - this.y);
+  }
 }

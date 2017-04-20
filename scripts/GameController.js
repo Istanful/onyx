@@ -1,9 +1,15 @@
 let game = new Game();
-let gs = [];
-let easeTypes = ["linear", "easeIn", "easeOut", "easeInOut"];
-for (let i = 0; i < 4; i++) {
-  gs.push(new GameObject(i, new Vector(0, i * 100)));
-  gs[i].moveTo(new Vector(500, i * 100, 2), 1000, easeTypes[i]);
-  game.gameObjects.push(gs[i]);
-}
+let tower = new Tower(
+  "Tower",
+  false,
+  new Vector(100, 250)
+);
+//tower.findChild("Cannon").rotateTo(Vector.withValue(90, 0), 2000)
+let enemy = new Enemy("1")
+tower.findChild("Cannon").rotateTo(90, 2000);
+
+// game.gameObjects.push(tower);
+
+game.gameObjects.push(tower);
+//game.gameObjects.push(enemy);
 game.start();
