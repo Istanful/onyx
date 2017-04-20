@@ -4,9 +4,10 @@ let tower = new Tower(
   false,
   new Vector(100, 250)
 );
-tower.rotateTo(Vector.withValue(130), 2000)
 tower.findChild("Cannon").rotateTo(Vector.withValue(-45), 2000)
 let enemy = new Enemy("1")
+
+// game.gameObjects.push(tower);
 
 game.gameObjects.push(tower);
 //game.gameObjects.push(enemy);

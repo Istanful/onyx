@@ -18,7 +18,7 @@ class Tower extends GameObject {
       resources.images.cannon,
       new Vector(-60, -130)
     );
-    cannon.origin = new Vector(0.4, 0.8);
+    cannon.origin = new Vector(0.36, 0.82);
 
     this.addChild(towerBase);
     this.addChild(cogwheel);

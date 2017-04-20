@@ -80,6 +80,19 @@ class GameObject {
     return Vector.add(parentPosition, this.localPosition);
   }
 
+  // Loops through the hierarchy and returns all parents of this object
+  get parents() {
+    let parent = this.parent;
+    let parents = [];
+    if (!this.parent) { return false; }
+    while (parent) {
+      parents.push(parent);
+      parent = parent.parent;
+    }
+
+    return parents;
+  }
+
   draw() {
     this.drawChildren();
     this.drawThis();
@@ -110,23 +123,35 @@ class GameObject {
     context.restore();
   }
 
+  // The context need to be rotated according to parent
+  inheritAngle(parent) {
+    let context = game.canvas.getContext("2d");
+    let rotationPoint = parent.relativeRotationPoint.scaled;
+    context.translate(rotationPoint.x,
+                      rotationPoint.y);
+    context.rotate(parent.angle.toRadians.x);
+    context.translate(-rotationPoint.x,
+                      -rotationPoint.y);
+  }
+
+  // Find all parents and inherit their angles
+  recursivelyInheritAngle() {
+    let parents = this.parents;
+    for (let i = parents.length - 1; i >= 0; i--) {
+      this.inheritAngle(parents[i]);
+    }
+  }
+
   rotateContext() {
     let context = game.canvas.getContext("2d");
     let rotationPoint = this.relativeRotationPoint.scaled;
 
     // If we have a parent we must first rotate around that origin point
-    if (this.parent) {
-      context.translate(this.parent.relativeRotationPoint.x,
-                        this.parent.relativeRotationPoint.y);
-      context.rotate(this.parent.angle.toRadians.x, this.parent.angle.toRadians.y);
-      context.translate(-this.parent.relativeRotationPoint.x,
-                        -this.parent.relativeRotationPoint.y);
-    }
+    this.recursivelyInheritAngle();
 
     // And after that rotate around this ones
     context.translate(rotationPoint.x, rotationPoint.y);
-    context.rotate(this.angle.toRadians.x,
-                   this.angle.toRadians.y);
+    context.rotate(this.angle.toRadians.x);
   }
 
   drawChildren() {
