@@ -12,6 +12,8 @@ class GameObject {
     // For example (0.5, 0.5) is in the middle.
     this.origin = new Vector(0.5, 0.5);
 
+    this.animations = {};
+
     // TODO : Fix this
     if (this.graphic)
 	    this.size = new Vector(this.graphic.width, this.graphic.height);
@@ -31,12 +33,21 @@ class GameObject {
   }
 
   updateProperties() {
-    if (this.sizeChange)
-      this.size = this.sizeChange.nextValue;
-    if (this.movement)
-      this.localPosition = this.movement.nextValue;
-    if (this.rotation)
-      this.angle = this.rotation.nextValue;
+    for (let key in this.animations) {
+      this.animations[key].update();
+    }
+  }
+
+  animate(property, target, duration, easingType = "easeInOut") {
+    let startValue = this[property];
+    let animation;
+
+    if (target.constructor.name == "Vector")
+      animation = new VectorAnimation(this, property, startValue, target, duration, easingType);
+    else
+      animation = new Animation(this, property, startValue, target, duration, easingType);
+
+    this.animations[property] = animation;
   }
 
   moveTo(target, duration, easingType = "easeInOut") {

@@ -1,6 +1,6 @@
 class Animation extends VectorAnimation {
-  constructor(startValue, targetValue, duration, easingType = "easeInOut") {
-    super(startValue, targetValue, duration, easingType);
+  constructor(gameObject, property, startValue, targetValue, duration, easingType = "easeInOut") {
+    super(gameObject, property, startValue, targetValue, duration, easingType);
     this.delta = this.targetValue - this.startValue;
   }
 

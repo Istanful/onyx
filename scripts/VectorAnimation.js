@@ -1,5 +1,8 @@
 class VectorAnimation {
-  constructor(startValue, targetValue, duration, easingType = "easeInOut") {
+  constructor(gameObject, property, startValue, targetValue, duration, easingType = "easeInOut") {
+    this.gameObject = gameObject;
+    this.property = property;
+
     // Distance related
     this.startValue = startValue;
     this.targetValue = targetValue;
@@ -9,6 +12,10 @@ class VectorAnimation {
     this.duration = duration;
     this.easingType = easingType;
     this.startingTime = new Date().getTime();
+  }
+
+  update() {
+    this.gameObject[this.property] = this.nextValue;
   }
 
   // The next position calculated based on current time
