@@ -75,14 +75,9 @@ class GameObject {
   get relativeRotationPoint() {
     if (!this.parent) { return this.rotationPoint; }
     let distanceFromParentY = this.rotationPoint.y - this.parent.relativeRotationPoint.y;
-    let parentAngle = 90 - this.parent.angle;
-    let delta = Vector.multiply(
-      Vector.withValue(distanceFromParentY),
-      new Vector(
-        Math.cos(parentAngle.toRadians()),
-        Math.sin(parentAngle.toRadians())
-      )
-    );
+
+    let parentAngle = this.parent.angle;
+    let delta = Vector.withValue(distanceFromParentY * Math.sin(parentAngle.toRadians()));
     return Vector.add(this.rotationPoint, delta);
   }
 
