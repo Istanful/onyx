@@ -85,7 +85,8 @@ let scripts = [
   "Game.js",
   "VectorAnimation.js",
   "Animation.js",
-  "AnimationState.js",
+  "AnimationGroup.js",
+  "AnimatorState.js",
   "Animator.js",
   "GameController.js"
 ];

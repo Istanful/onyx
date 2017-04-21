@@ -1,4 +1,4 @@
-class AnimationState {
+class AnimationGroup {
   constructor(animations = []) {
     this.animations = animations;
   }

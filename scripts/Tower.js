@@ -7,17 +7,15 @@ class Tower extends GameObject {
                               "localPosition",
                               new Vector(100, 100),
                               500);
-    let state1 = new AnimationState([move1]);
     let move2 = new VectorAnimation(this.findChild("Cannon"),
                               "localPosition",
                               new Vector(200, 100),
                               500);
-    let state2 = new AnimationState([move2]);
     let move3 = new VectorAnimation(this.findChild("Cannon"),
                               "size",
                               new Vector(0, 0),
                               500);
-    let state3 = new AnimationState([move3]);
+    let group1 = new AnimationGroup([move1, move2, move3]);
     let move4 = new VectorAnimation(this.findChild("Cannon"),
                               "size",
                               new Vector(100, 100),
@@ -26,12 +24,10 @@ class Tower extends GameObject {
                               "angle",
                               90,
                               500);
-    let state4 = new AnimationState([move4, move5]);
+    let group2 = new AnimationGroup([move4, move5]);
+    let state1 = new AnimatorState([group1, group2], function() { return 2 > 1 })
 
-    this.animator.addAnimationState(state1);
-    this.animator.addAnimationState(state2);
-    this.animator.addAnimationState(state3);
-    this.animator.addAnimationState(state4);
+    this.animator.addAnimatorState(state1);
   }
 
   constructParts() {
