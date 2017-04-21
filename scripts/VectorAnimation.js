@@ -1,17 +1,16 @@
 class VectorAnimation {
-  constructor(gameObject, property, startValue, targetValue, duration, easingType = "easeInOut") {
+  constructor(gameObject, property, targetValue, duration, easingType = "easeInOut") {
     this.gameObject = gameObject;
     this.property = property;
 
     // Distance related
-    this.startValue = startValue;
     this.targetValue = targetValue;
-    this.distance = Vector.subtract(targetValue, startValue);
 
     // Timing
     this.duration = duration;
     this.easingType = easingType;
-    this.startingTime = new Date().getTime();
+
+    this.started = false;
   }
 
   update() {
@@ -20,8 +19,21 @@ class VectorAnimation {
 
   // The next position calculated based on current time
   get nextValue() {
+    if (!this.started) { this.start() }
     if (this.done) { return this.targetValue }
     return Vector.add(this.startValue, this.nextStep);
+  }
+
+  // Initialize values. This should be done fist when the animation is supposed to run
+  start() {
+    this.startingTime = new Date().getTime();
+    this.startValue = this.gameObject[this.property];
+    this.distance = Vector.subtract(this.targetValue, this.startValue);
+    this.started = true;
+  }
+
+  reset() {
+    this.start();
   }
 
   // Step depicts the next offset to be added to the startValue

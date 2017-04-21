@@ -2,7 +2,6 @@ class Enemy extends GameObject {
   constructor(name, graphic, localPosition = new Vector(window.innerWidth, 800), angle = 0) {
     super(name, graphic, localPosition, angle);
     this.size = Vector.withValue(100);
-    this.moveTo(new Vector(-100, 800), 10000, "linear");
   }
 
   draw() {
