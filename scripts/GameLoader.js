@@ -81,7 +81,7 @@ let scripts = [
   "Number.js",
   "Array.js",
   "Tower.js",
-  "Enemy.js",
+  "Minion.js",
   "Vector.js",
   "Game.js",
   "VectorAnimation.js",

@@ -16,6 +16,12 @@ class AnimationGroup {
     this.animations.push(animation);
   }
 
+  addAnimations(animations) {
+    for (let i = 0; i < animations.length; i++) {
+      this.addAnimation(animations[i]);
+    }
+  }
+
   get conditionsMet() {
     // Per default conditions are met when all animations are done
     let done;

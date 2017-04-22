@@ -21,4 +21,8 @@ class Animation extends VectorAnimation {
     this.delta = this.targetValue - this.startValue;
     this.started = true;
   }
+
+  static from(object, property, keyframe) {
+    return new Animation(object, property, keyframe[0], keyframe[1], keyframe[2] || "easeIn");
+  }
 }

@@ -7,4 +7,8 @@ class Enemy extends GameObject {
     let ctx = game.canvas.getContext("2d");
     ctx.strokeRect(this.position.x, this.position.scaled.y, this.size.scaled.x, this.size.scaled.y);
   }
+
+  update() {
+    super.update();
+  }
 }

@@ -229,6 +229,12 @@ class GameObject {
     gameObject.parent = this;
   }
 
+  addChildren(gameObjects) {
+    for (let i = 0; i < gameObjects.length; i++){
+      this.addChild(gameObjects[i]);
+    }
+  }
+
   findChild(name) {
     for (let i = 0; i < this.children.length; i++) {
       if (this.children[i].name == name)

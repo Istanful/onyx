@@ -11,6 +11,12 @@ class Animator {
     this.animatorStates.push(animatorState);
   }
 
+  addAnimatorStates(animatorStates) {
+    for (let i = 0; i < animatorStates.length; i++) {
+      this.addAnimatorState(animatorStates[i]);
+    }
+  }
+
   get currentAnimatorState() {
     for (let i = 0; i < this.animatorStates.length; i++) {
       if (this.animatorStates[i].meetsConditions)
