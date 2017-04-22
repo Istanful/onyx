@@ -79,6 +79,7 @@ let images = [
 let scripts = [
   "GameObject.js",
   "Number.js",
+  "Array.js",
   "Tower.js",
   "Enemy.js",
   "Vector.js",

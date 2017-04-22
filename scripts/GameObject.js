@@ -13,12 +13,62 @@ class GameObject {
     this.origin = new Vector(0.5, 0.5);
 
     this.animations = {};
+  }
 
-    // TODO : Fix this
+  // Returns the points of the box occupied in the world space
+  // Note to self: This is only local since the relativeRotationPoint of
+  // children only can be calculated when the parent knows its' size.
+  get boundingBox() {
+    let points = [];
+    for (let i = 0; i < 4; i++) {
+      // Calculate the "delta" which is the coordinates from the rotationPoint
+      let x = i < 2 ? this.size.x - this.size.x * this.origin.x : -this.size.x * this.origin.x;
+      let y = i%2 == 0 ? this.size.y - this.size.y * this.origin.y : -this.size.y * this.origin.y;
+      let bisectris = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+      let angle = Math.atan(x/y) - this.angle.toRadians();
+
+      let delta = new Vector(
+        Math.sin(angle) * bisectris,
+        Math.cos(angle) * bisectris
+      );
+
+      // Calculate the point which is a position delta from the rotationPoint
+      let point;
+      if (i%2 == 0)
+        point = Vector.add(this.rotationPoint, delta);
+      else
+        point = Vector.subtract(this.rotationPoint, delta);
+      points.push(point);
+    }
+
+    return points;
+  }
+
+  get size() {
     if (this.graphic)
-	    this.size = new Vector(this.graphic.width, this.graphic.height);
+      return new Vector(this.graphic.width, this.graphic.height);
     else
-      this.size = Vector.zero;
+      return this.childrenSize;
+  }
+
+  get childrenSize() {
+    if (this.children.length == 0) { return Vector.zero; }
+    let xMin, xMax, yMin, yMax;
+    xMin = xMax = this.children[0].boundingBox[0].x;
+    yMin = yMax = this.children[0].boundingBox[0].y;
+
+    for (let i = 0; i < this.children.length; i++) {
+      let points = this.children[i].boundingBox;
+      for (let p = 0; p < points.length; p++) {
+        let point = points[p];
+        xMin = [xMin, point.x].min();
+        yMin = [yMin, point.y].min();
+        xMax = [xMax, point.x].max();
+        yMax = [yMax, point.y].max();
+      }
+    }
+
+    return new Vector(xMax - xMin, yMax - yMin);
   }
 
   update() {
@@ -99,6 +149,14 @@ class GameObject {
     return parents;
   }
 
+  get bounds() {
+    let origin = new Vector(0.5, 0.5);
+    return Vector.multiply(
+      this.size,
+      origin
+    );
+  }
+
   draw() {
     this.drawChildren();
     this.drawThis();
@@ -116,7 +174,6 @@ class GameObject {
     let rotationPoint = this.relativeRotationPoint.scaled;
 
     context.save();
-    context.strokeStyle = "black";
 
     this.rotateContext();
 
