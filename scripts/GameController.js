@@ -4,7 +4,6 @@ let tower = new Tower(
   false,
   new Vector(100, 250)
 );
-tower.findChild("Cannon").animate("angle", 10, 2000);
 
 let spawner = new MinionSpawner();
 

@@ -4,6 +4,7 @@ class Minion extends GameObject {
     this.animator = new Animator();
     this.speedMultiplier = tower.damagePerSecond;
     this.velocity = 0.75;
+    this.tag = "Enemy";
     this.constructParts();
   }
 

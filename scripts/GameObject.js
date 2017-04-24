@@ -88,6 +88,8 @@ class GameObject {
 
   updateProperties() {
     for (let key in this.animations) {
+      // Dispose of done animations
+      if (this.animations[key].done) { delete this.animations[key]; continue; }
       this.animations[key].update();
     }
   }
@@ -172,8 +174,8 @@ class GameObject {
     context.strokeRect(rotationPoint.x, rotationPoint.y, 5, 5)
 
     // The hitbox
-      context.strokeStyle = "black";
-      context.strokeRect(position.x, position.y, size.x, size.y);
+    context.strokeStyle = "black";
+    context.strokeRect(position.x, position.y, size.x, size.y);
 
     // The boundingBox
     context.strokeStyle = "red";
