@@ -2,6 +2,9 @@ class Tower extends GameObject {
   constructor(name, graphic, localPosition = Vector.zero, angle = 0) {
     super(name, graphic, localPosition, angle);
     this.constructParts();
+
+    // Dummy data
+    this.damagePerSecond = 2;
   }
 
   constructParts() {

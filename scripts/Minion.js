@@ -1,9 +1,9 @@
 class Minion extends GameObject {
-  constructor(name, graphic, localPosition = Vector.zero, angle = 0) {
-    super(name, graphic, localPosition, angle);
+  constructor(name, localPosition = new Vector(2000, 0), angle = 0) {
+    super(name, false, localPosition, angle);
     this.animator = new Animator();
-    this.speed = 1;
-    this.velocity = 0.8;
+    this.speedMultiplier = tower.damagePerSecond;
+    this.velocity = 0.75;
     this.constructParts();
   }
 
@@ -37,7 +37,7 @@ class Minion extends GameObject {
     let side, thigh, calve, foot, arm;
     let groups = [];
     let self = this;
-    let speed = 500 * this.speed;
+    let speed = 500 / this.speedMultiplier;
 
     let changeSide = function() {
       side = side == "Left" ? "Right" : "Left";
@@ -56,14 +56,14 @@ class Minion extends GameObject {
       ],
       [
         [110, speed, "easeOut"],
-        [10, speed, "easeOut"],
-        [-120, speed, "easeOut"],
+        [5, speed, "easeOut"],
+        [-115, speed, "easeOut"],
         [-5, speed, "easeInOut"]
       ],
       [
         [70, speed, "linear"],
-        [70, speed, "linear"],
-        [-140, speed, "linear"],
+        [40, speed, "linear"],
+        [-110, speed, "linear"],
         [0, speed, "easeOut"]
       ],
       [
@@ -124,11 +124,11 @@ class Minion extends GameObject {
   update() {
     super.update();
     this.animator.update();
+    this.localPosition.x -= this.speedMultiplier * this.velocity;
     this.stickToBottom();
   }
 
   stickToBottom() {
-    this.localPosition.y = 900 - this.size.y;
-    this.localPosition.x -= this.speed * this.velocity;
+    this.localPosition.y = 780 - this.size.y;
   }
 }

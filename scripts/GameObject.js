@@ -13,6 +13,10 @@ class GameObject {
     this.origin = new Vector(0.5, 0.5);
 
     this.animations = {};
+    if (this.graphic)
+      this.size = new Vector(this.graphic.width, this.graphic.height)
+    else
+      this.size = Vector.zero;
   }
 
   // Returns the points of the box occupied in the world space
@@ -35,20 +39,20 @@ class GameObject {
       // Calculate the point which is a position delta from the rotationPoint
       let point;
       if (i%2 == 0)
-        point = Vector.add(this.rotationPoint, delta);
+        point = Vector.add(this.relativeRotationPoint, delta);
       else
-        point = Vector.subtract(this.rotationPoint, delta);
+        point = Vector.subtract(this.relativeRotationPoint, delta);
       points.push(point);
     }
 
     return points;
   }
 
-  get size() {
+  setSize() {
     if (this.graphic)
-      return new Vector(this.graphic.width, this.graphic.height);
+      this.size = new Vector(this.graphic.width, this.graphic.height);
     else
-      return this.childrenSize;
+      this.size = this.childrenSize;
   }
 
   get childrenSize() {
@@ -89,13 +93,12 @@ class GameObject {
   }
 
   animate(property, target, duration, easingType = "easeInOut") {
-    let startValue = this[property];
     let animation;
 
     if (target.constructor.name == "Vector")
-      animation = new VectorAnimation(this, property, startValue, target, duration, easingType);
+      animation = new VectorAnimation(this, property, target, duration, easingType);
     else
-      animation = new Animation(this, property, startValue, target, duration, easingType);
+      animation = new Animation(this, property, target, duration, easingType);
 
     this.animations[property] = animation;
   }
@@ -157,6 +160,33 @@ class GameObject {
     );
   }
 
+  debugGizmos() {
+    let context = game.canvas.getContext("2d");
+    let size = this.size.scaled;
+    let position = this.position.scaled;
+    let rotationPoint = this.relativeRotationPoint.scaled;
+    let boundingBox = this.boundingBox;
+
+    // The rotation point
+    context.strokeStyle = "green";
+    context.strokeRect(rotationPoint.x, rotationPoint.y, 5, 5)
+
+    // The hitbox
+      context.strokeStyle = "black";
+      context.strokeRect(position.x, position.y, size.x, size.y);
+
+    // The boundingBox
+    context.strokeStyle = "red";
+    context.beginPath();
+    context.moveTo(boundingBox[0].scaled.x, boundingBox[0].scaled.x);
+    for (let i = 0; i < boundingBox.length; i++) {
+      context.strokeRect(boundingBox[i].scaled.x, boundingBox[i].scaled.y, 5, 5);
+    }
+    context.stroke();
+
+    if (!this.graphic) { return; }
+  }
+
   draw() {
     this.drawChildren();
     this.drawThis();
@@ -174,7 +204,6 @@ class GameObject {
     let rotationPoint = this.relativeRotationPoint.scaled;
 
     context.save();
-
     this.rotateContext();
 
     context.drawImage(this.graphic,
@@ -184,6 +213,8 @@ class GameObject {
                       size.y);
 
     context.restore();
+    context.strokeStyle = "white";
+    context.strokeRect(-10, 615, 5000, 1000);
   }
 
   // The context need to be rotated according to parent
