@@ -117,6 +117,48 @@ class GameObject {
 	  this.sizeChange = new VectorAnimation(this.size, target, duration, easingType);
   }
 
+  // Returns the objects being collided with
+  get collision() {
+    let gameObjects = game.gameObjects;
+    let collisionWith = [];
+    for (let i = 0; i < gameObjects.length; i++) {
+      // Don't collide with self
+      if (gameObjects[i] == this)
+        continue;
+
+      let inside = GameObject.inBounds(gameObjects[i], this);
+      let covering = GameObject.inBounds(this, gameObjects[i]);
+      if (inside || covering)
+        collisionWith.push(gameObjects[i]);
+    }
+
+    return collisionWith;
+  }
+
+  static inBounds(first, second) {
+    return GameObject.horizontallyInBounds(first, second)
+           && GameObject.verticallyInBounds(first, second);
+  }
+
+  static horizontallyInBounds(first, second) {
+    return first.position.x >= second.position.x
+           && first.position.x <= second.position.x + second.size.x;
+  }
+
+  static verticallyInBounds(first, second) {
+    return first.position.y >= second.position.y
+           && second.position.y <= second.position.y + second.size.y;
+  }
+
+  // Returns colliding object with tag if any
+  getCollisionWithTag(tag) {
+    let collision = this.collision;
+    for (let i = 0; i < collision.length; i++) {
+      if (collision[i].tag == tag)
+        return collision[i];
+    }
+  }
+
   // The point from where to rotate the object
   get rotationPoint() {
     return Vector.add(
@@ -208,6 +250,9 @@ class GameObject {
     context.save();
     this.rotateContext();
 
+    if (this.opacity || this.opacity == 0)
+      context.globalAlpha = this.opacity;
+
     context.drawImage(this.graphic,
                       position.x - rotationPoint.x,
                       position.y - rotationPoint.y,
@@ -273,5 +318,9 @@ class GameObject {
       if (this.children[i].name == name)
         return this.children[i];
     }
+  }
+
+  destroy() {
+    game.removeGameObject(this);
   }
 }

@@ -33,6 +33,13 @@ class Game {
     this.gameObjects.push(gameObject);
   }
 
+  removeGameObject(gameObject) {
+    for (let i = 0; i < this.gameObjects.length; i++) {
+      if (this.gameObjects[i] == gameObject)
+        this.gameObjects.splice(i, 1);
+    }
+  }
+
   clearCanvas() {
     let ctx = this.context;
 

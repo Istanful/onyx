@@ -4,10 +4,12 @@ class Tower extends GameObject {
     this.constructParts();
 
     this.attackSpeed = 2;
+    this.damage = 10; // dummy data
 
     // Dummy data
     this.damagePerSecond = this.attackSpeed;
 
+    this.bulletCount = 0;
     setTimeout(this.shoot, this.attackSpeed);
   }
 
@@ -77,11 +79,12 @@ class Tower extends GameObject {
   shoot() {
     let minion = tower.targetMinion;
     let cannon = tower.cannon;
-    let bullet = new GameObject("Bullet", resources.images.bullet, tower.tipPosition);
+    let bullet = new Bullet(this.bulletCount);
     let velocity = tower.attackSpeed;
-    let duration = Vector.distance(tower.tipPosition, minion.position) / velocity;
+    let duration = Vector.distance(tower.tipPosition, minion.position) / velocity + 100;
     bullet.animate("localPosition", minion.position, duration, "linear");
     game.addGameObject(bullet);
+    this.bulletCount++;
     setTimeout(tower.shoot, 1000 / tower.attackSpeed);
   }
 

@@ -5,6 +5,9 @@ class Minion extends GameObject {
     this.speedMultiplier = tower.damagePerSecond;
     this.velocity = 0.75;
     this.tag = "Enemy";
+    this.health = 100;
+    this.startingHealth = this.health;
+
     this.constructParts();
   }
 
@@ -14,13 +17,16 @@ class Minion extends GameObject {
     let leftArm = new GameObject("LeftArm", resources.images.minionArm, new Vector(-10, 65));
     let rightArm = new GameObject("RightArm", resources.images.minionArm, new Vector(-10, 65));
     leftArm.origin = rightArm.origin = new Vector(0.8, 0.4);
+    let healthBar = new GameObject("HealthBar", resources.images.healthBar, new Vector(0, -10));
+    healthBar.opacity = 0;
 
     let bodyParts = [
       leftArm,
       leftLeg,
       new GameObject("Body", resources.images.minionBody),
       rightLeg,
-      rightArm
+      rightArm,
+      healthBar
     ];
     this.addChildren(bodyParts);
     this.addAnimations();
@@ -125,8 +131,36 @@ class Minion extends GameObject {
   update() {
     super.update();
     this.animator.update();
-    this.localPosition.x -= this.speedMultiplier * this.velocity;
+    this.handleCollision();
+    this.walk();
     this.stickToBottom();
+  }
+
+  handleCollision() {
+    let bullet = this.findChild("Body").getCollisionWithTag("Bullet");
+    if (bullet) {
+      bullet.destroy();
+      this.takeDamage();
+    }
+  }
+
+  takeDamage() {
+    this.health -= tower.damage;
+    this.animateHealthBar();
+    if (this.health <= 0) {
+      this.destroy();
+    }
+  }
+
+  animateHealthBar() {
+    let healthBar = this.findChild("HealthBar");
+    healthBar.animate("opacity", 1, 200);
+    console.log((this.health / this.startingHealth) * 100)
+    healthBar.animate("size", new Vector((this.health / this.startingHealth) * 100, 15), 200);
+  }
+
+  walk() {
+    this.localPosition.x -= this.speedMultiplier * this.velocity;
   }
 
   stickToBottom() {
