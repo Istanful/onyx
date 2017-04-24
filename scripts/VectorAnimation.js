@@ -20,7 +20,7 @@ class VectorAnimation {
   // The next position calculated based on current time
   get nextValue() {
     if (!this.started) { this.start() }
-    if (this.done) { return this.targetValue }
+    if (this.elapsedTime >= this.duration) { return this.targetValue; this.done = true; }
     return Vector.add(this.startValue, this.nextStep);
   }
 
@@ -30,6 +30,7 @@ class VectorAnimation {
     this.startValue = this.gameObject[this.property];
     this.distance = Vector.subtract(this.targetValue, this.startValue);
     this.started = true;
+    this.done = false;
   }
 
   reset() {
@@ -69,10 +70,5 @@ class VectorAnimation {
   // Percentage done
   get completionPercentage() {
     return this.elapsedTime / this.duration;
-  }
-
-  // Determines if movement is made
-  get done() {
-    return this.elapsedTime >= this.duration;
   }
 }

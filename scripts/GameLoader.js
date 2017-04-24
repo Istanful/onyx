@@ -73,7 +73,8 @@ let images = [
   "minionThigh.svg",
   "minionFoot.svg",
   "minionBody.svg",
-  "minionArm.svg"
+  "minionArm.svg",
+  "bullet.svg"
 ];
 
 let scripts = [

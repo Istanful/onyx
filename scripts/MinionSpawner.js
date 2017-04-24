@@ -6,7 +6,7 @@ class MinionSpawner {
 
   spawn() {
     let minion = new Minion(this.minionCount);
-    game.gameObjects.push(minion);
+    game.addGameObject(minion);
     this.minionCount++;
   }
 }

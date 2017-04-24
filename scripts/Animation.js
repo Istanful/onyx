@@ -6,7 +6,10 @@ class Animation extends VectorAnimation {
 
   get nextValue() {
     if (!this.started) { this.start() }
-    if (this.done) { return this.targetValue }
+    if (this.elapsedTime >= this.duration) {
+      this.done = true;
+      return this.targetValue;
+    }
     return this.startValue + this.nextStep;
   }
 
@@ -20,6 +23,7 @@ class Animation extends VectorAnimation {
     this.startValue = this.gameObject[this.property];
     this.delta = this.targetValue - this.startValue;
     this.started = true;
+    this.done = false;
   }
 
   static from(object, property, keyframe) {

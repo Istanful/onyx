@@ -24,6 +24,13 @@ class Vector {
 	  return new Vector(value, value);
   }
 
+  static distance(first, second) {
+    return Math.sqrt(
+      Math.pow(second.x - first.x, 2),
+      Math.pow(second.x - first.x, 2)
+    );
+  }
+
   // Returns the same vector scaled to game space
   get scaled() {
 	   return Vector.multiply(this, Vector.withValue(game.scale));

@@ -29,6 +29,10 @@ class Game {
     }
   }
 
+  addGameObject(gameObject) {
+    this.gameObjects.push(gameObject);
+  }
+
   clearCanvas() {
     let ctx = this.context;
 

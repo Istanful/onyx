@@ -7,5 +7,5 @@ let tower = new Tower(
 
 let spawner = new MinionSpawner();
 
-game.gameObjects.push(tower);
+game.addGameObject(tower);
 game.start();
