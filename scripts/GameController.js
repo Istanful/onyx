@@ -4,7 +4,6 @@ let tower = new Tower(
   false,
   new Vector(100, 250)
 );
-
 let spawner = new MinionSpawner();
 
 game.addGameObject(tower);

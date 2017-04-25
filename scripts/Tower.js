@@ -36,8 +36,9 @@ class Tower extends GameObject {
   }
 
   aim() {
-    let cannon = this.cannon;
     let closest = this.targetMinion;
+    if (!closest) { return; }
+    let cannon = this.cannon;
 
     // Aim at the closest minion
     let y = closest.position.y - this.position.y;
@@ -53,12 +54,12 @@ class Tower extends GameObject {
 
   get targetMinion() {
     // Find the closest minion
-    let gameObjects = game.gameObjects;
-    let closest = gameObjects[0];
+    let minions = game.findGameObjectsWithTag("Enemy");
+    let closest = minions[0];
 
-    for (let i = 0; i < gameObjects; i++)
-      if (gameObjects[i].tag == "Enemy" && gameObjects[i].position.x < closest.x)
-        closest = gameObjects[i];
+    for (let i = 0; i < minions.length; i++)
+      if (minions[i].position.x < closest.x)
+        closest = minions[i];
 
     return closest;
   }

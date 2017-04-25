@@ -155,7 +155,6 @@ class Minion extends GameObject {
   animateHealthBar() {
     let healthBar = this.findChild("HealthBar");
     healthBar.animate("opacity", 1, 200);
-    console.log((this.health / this.startingHealth) * 100)
     healthBar.animate("size", new Vector((this.health / this.startingHealth) * 100, 15), 200);
   }
 

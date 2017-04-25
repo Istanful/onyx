@@ -40,6 +40,15 @@ class Game {
     }
   }
 
+  findGameObjectsWithTag(tag) {
+    let gameObjects = [];
+    for (let i = 0; i < this.gameObjects.length; i++) {
+      if (this.gameObjects[i].tag == tag)
+        gameObjects.push(this.gameObjects[i]);
+    }
+    return gameObjects;
+  }
+
   clearCanvas() {
     let ctx = this.context;
 
