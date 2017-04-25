@@ -1,12 +1,14 @@
 class MinionSpawner {
   constructor() {
     this.minionCount = 0;
-    setTimeout(this.spawn(), 1000);
+    this.spawn();
   }
 
   spawn() {
-    let minion = new Minion(this.minionCount);
+    let self = this.constructor.name == "MinionSpawner" ? this : spawner;
+    let minion = new Minion("Minion" + tower.minionCount);
     game.addGameObject(minion);
-    this.minionCount++;
+    self.minionCount++;
+    setTimeout(self.spawn, (minion.startingHealth / tower.damagePerSecond) * 1000)
   }
 }

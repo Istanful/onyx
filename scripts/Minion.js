@@ -2,12 +2,11 @@ class Minion extends GameObject {
   constructor(name, localPosition = new Vector(2000, 0), angle = 0) {
     super(name, false, localPosition, angle);
     this.animator = new Animator();
-    this.speedMultiplier = tower.damagePerSecond;
-    this.velocity = 0.75;
-    this.tag = "Enemy";
     this.health = 100;
     this.startingHealth = this.health;
+    this.tag = "Enemy";
 
+    this.setVelocity();
     this.constructParts();
   }
 
@@ -40,11 +39,16 @@ class Minion extends GameObject {
     this.animator.addAnimatorStates(animatorStates);
   }
 
+  setVelocity() {
+    let distance = Vector.distance(tower.position, this.position);
+    this.velocity = distance / ((this.startingHealth / tower.damagePerSecond) * 100);
+  }
+
   get walkAnimationGroups() {
     let side, thigh, calve, foot, arm;
     let groups = [];
     let self = this;
-    let speed = 500 / this.speedMultiplier;
+    let speed = 500 / this.velocity;
 
     let changeSide = function() {
       side = side == "Left" ? "Right" : "Left";
@@ -155,12 +159,11 @@ class Minion extends GameObject {
   animateHealthBar() {
     let healthBar = this.findChild("HealthBar");
     healthBar.animate("opacity", 1, 200);
-    console.log((this.health / this.startingHealth) * 100)
     healthBar.animate("size", new Vector((this.health / this.startingHealth) * 100, 15), 200);
   }
 
   walk() {
-    this.localPosition.x -= this.speedMultiplier * this.velocity;
+    this.localPosition.x -= this.velocity;
   }
 
   stickToBottom() {
