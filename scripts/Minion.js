@@ -7,16 +7,23 @@ class Minion extends GameObject {
     this.startingHealth = this.health;
     this.tag = "Enemy";
 
-    this.walkToEndOfScreen();
     this.constructParts();
+    this.walkToEndOfScreen();
   }
 
   walkToEndOfScreen() {
-    let target =  this.targetPosition;
-    let distance = Vector.distance(target, this.position);
+    let deathPosition =  this.targetPosition;
+    let distance = Vector.distance(deathPosition, this.position);
     let duration = (this.startingHealth / tower.damagePerSecond) * 1000;
-    this.velocity = distance / duration;
-    this.animate("localPosition", this.targetPosition, duration, "linear");
+    let target = new Vector(0 - this.findChild("Body").size.x, deathPosition.y);
+    duration += Vector.distance(target, deathPosition) / this.velocity;
+    this.animate("localPosition", target, duration, "linear", this.destroy);
+  }
+
+  get velocity() {
+    let distance = Vector.distance(this.targetPosition, this.position);
+    let duration = (this.startingHealth / tower.damagePerSecond) * 1000;
+    return distance / duration;
   }
 
   constructParts() {

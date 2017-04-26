@@ -34,6 +34,7 @@ class Game {
   }
 
   removeGameObject(gameObject) {
+    let l1 = this.gameObjects.length;
     for (let i = 0; i < this.gameObjects.length; i++) {
       if (this.gameObjects[i] == gameObject)
         this.gameObjects.splice(i, 1);

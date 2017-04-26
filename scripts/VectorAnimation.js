@@ -1,5 +1,5 @@
 class VectorAnimation {
-  constructor(gameObject, property, targetValue, duration, easingType = "easeInOut") {
+  constructor(gameObject, property, targetValue, duration, easingType = "easeInOut", callback) {
     this.gameObject = gameObject;
     this.property = property;
 
@@ -11,6 +11,7 @@ class VectorAnimation {
     this.easingType = easingType;
 
     this.started = false;
+    this.callback = callback;
   }
 
   update() {
@@ -20,7 +21,11 @@ class VectorAnimation {
   // The next position calculated based on current time
   get nextValue() {
     if (!this.started) { this.start() }
-    if (this.elapsedTime >= this.duration) { return this.targetValue; this.done = true; }
+    if (this.elapsedTime >= this.duration) {
+      if (this.callback) { this.callback(); }
+      this.done = true;
+      return this.targetValue;
+    }
     return Vector.add(this.startValue, this.nextStep);
   }
 

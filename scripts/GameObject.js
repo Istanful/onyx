@@ -94,13 +94,13 @@ class GameObject {
     }
   }
 
-  animate(property, target, duration, easingType = "easeInOut") {
+  animate(property, target, duration, easingType = "easeInOut", callback) {
     let animation;
 
     if (target.constructor.name == "Vector")
-      animation = new VectorAnimation(this, property, target, duration, easingType);
+      animation = new VectorAnimation(this, property, target, duration, easingType, callback);
     else
-      animation = new Animation(this, property, target, duration, easingType);
+      animation = new Animation(this, property, target, duration, easingType, callback);
 
     this.animations[property] = animation;
   }
