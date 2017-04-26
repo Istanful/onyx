@@ -1,7 +1,7 @@
 class Minion extends GameObject {
   constructor(name, localPosition, angle = 0) {
     super(name, false, localPosition, angle);
-    this.localPosition = new Vector(2000, this.targetPosition.y);
+    this.localPosition = new Vector(window.innerWidth * (1 / game.scale), this.targetPosition.y);
     this.animator = new Animator();
     this.health = 100;
     this.startingHealth = this.health;

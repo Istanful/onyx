@@ -261,7 +261,6 @@ class GameObject {
 
     context.restore();
     context.strokeStyle = "white";
-    context.strokeRect(-10, 615, 5000, 1000);
   }
 
   // The context need to be rotated according to parent

@@ -34,7 +34,6 @@ class Game {
   }
 
   removeGameObject(gameObject) {
-    let l1 = this.gameObjects.length;
     for (let i = 0; i < this.gameObjects.length; i++) {
       if (this.gameObjects[i] == gameObject)
         this.gameObjects.splice(i, 1);
@@ -56,10 +55,14 @@ class Game {
     // Make canvas full screen
     let height = this.canvas.height = window.innerHeight;
     let width = this.canvas.width = window.innerWidth;
-    this.scale = height / 1000;
 
     // Fill background
     ctx.fillStyle = "#2F567D";
     ctx.fillRect(0, 0, width, height);
+  }
+
+  get scale() {
+    let height = window.innerHeight;
+    return height / 1200;
   }
 }
