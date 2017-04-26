@@ -3,8 +3,8 @@ class Tower extends GameObject {
     super(name, graphic, localPosition, angle);
     this.constructParts();
 
-    this.attackSpeed = 1;
-    this.damage = 10; // dummy data
+    this.attackSpeed = 2;
+    this.damage = 5; // dummy data
     this.damagePerSecond = this.attackSpeed * this.damage;
 
     this.bulletCount = 0;
@@ -34,13 +34,13 @@ class Tower extends GameObject {
   }
 
   aim() {
-    let closest = this.targetMinion;
-    if (!closest) { return; }
+    let target = this.targetPosition;
+    if (!target) { return; }
     let cannon = this.cannon;
 
     // Aim at the closest minion
-    let y = closest.position.y - this.position.y;
-    let x = closest.position.x - this.position.x;
+    let y = target.y - this.position.y;
+    let x = target.x - this.position.x;
     let angle = Math.atan(y / x).toDegrees();
     let deltaAngle = Math.abs(cannon.angle - angle);
 
@@ -62,6 +62,28 @@ class Tower extends GameObject {
     return closest;
   }
 
+  get targetPosition() {
+    let minion = this.targetMinion;
+    if (!minion) { return; }
+    let projectileDuration = this.projectileDuration;
+
+    let x = minion.position.x - minion.velocity * projectileDuration;
+
+    return new Vector(
+      x,
+      minion.position.y
+    );
+  }
+
+  get projectileSpeed() {
+    return this.attackSpeed; // dummy data
+  }
+
+  get projectileDuration() {
+    let minion = this.targetMinion;
+    return Vector.distance(tower.tipPosition, minion.position) / tower.projectileSpeed;
+  }
+
   // The position of the tip of the cannon
   get tipPosition() {
     let cannon = this.cannon;
@@ -76,12 +98,15 @@ class Tower extends GameObject {
   }
 
   shoot() {
-    let minion = tower.targetMinion;
+    let target = tower.targetPosition;
+    if (!target) {
+      setTimeout(tower.shoot, 1000 / tower.attackSpeed);
+      return;
+    }
     let cannon = tower.cannon;
     let bullet = new Bullet(this.bulletCount);
-    let velocity = tower.attackSpeed;
-    let duration = Vector.distance(tower.tipPosition, minion.position) / velocity + 100;
-    bullet.animate("localPosition", minion.position, duration, "linear");
+    let duration = tower.projectileDuration;
+    bullet.animate("localPosition", target, duration, "linear");
     game.addGameObject(bullet);
     this.bulletCount++;
     setTimeout(tower.shoot, 1000 / tower.attackSpeed);

@@ -1,13 +1,22 @@
 class Minion extends GameObject {
-  constructor(name, localPosition = new Vector(2000, 0), angle = 0) {
+  constructor(name, localPosition, angle = 0) {
     super(name, false, localPosition, angle);
+    this.localPosition = new Vector(2000, this.targetPosition.y);
     this.animator = new Animator();
     this.health = 100;
     this.startingHealth = this.health;
     this.tag = "Enemy";
 
-    this.setVelocity();
+    this.walkToEndOfScreen();
     this.constructParts();
+  }
+
+  walkToEndOfScreen() {
+    let target =  this.targetPosition;
+    let distance = Vector.distance(target, this.position);
+    let duration = (this.startingHealth / tower.damagePerSecond) * 1000;
+    this.velocity = distance / duration;
+    this.animate("localPosition", this.targetPosition, duration, "linear");
   }
 
   constructParts() {
@@ -39,16 +48,11 @@ class Minion extends GameObject {
     this.animator.addAnimatorStates(animatorStates);
   }
 
-  setVelocity() {
-    let distance = Vector.distance(tower.position, this.position);
-    this.velocity = distance / ((this.startingHealth / tower.damagePerSecond) * 100);
-  }
-
   get walkAnimationGroups() {
     let side, thigh, calve, foot, arm;
     let groups = [];
     let self = this;
-    let speed = 500 / this.velocity;
+    let speed = 50 / this.velocity;
 
     let changeSide = function() {
       side = side == "Left" ? "Right" : "Left";
@@ -136,8 +140,6 @@ class Minion extends GameObject {
     super.update();
     this.animator.update();
     this.handleCollision();
-    this.walk();
-    this.stickToBottom();
   }
 
   handleCollision() {
@@ -162,11 +164,8 @@ class Minion extends GameObject {
     healthBar.animate("size", new Vector((this.health / this.startingHealth) * 100, 15), 200);
   }
 
-  walk() {
-    this.localPosition.x -= this.velocity;
-  }
-
-  stickToBottom() {
-    this.localPosition.y = 780 - this.size.y;
+  // The position where this minion should die
+  get targetPosition() {
+    return new Vector(tower.position.x + 300, 780 - this.size.y);
   }
 }
