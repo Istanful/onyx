@@ -3,12 +3,18 @@ class Tower extends GameObject {
     super(name, graphic, localPosition, angle);
     this.constructParts();
 
-    this.attackSpeed = 2;
-    this.damage = 5; // dummy data
-    this.damagePerSecond = this.attackSpeed * this.damage;
-
-    this.bulletCount = 0;
+    this.setStats();
     setTimeout(this.shoot, this.attackSpeed);
+  }
+
+  setStats() {
+    this.attackSpeed = 1;
+    this.damage = 10; // dummy data
+    this.criticalHitChance = 0.2;
+  }
+
+  get damagePerSecond() {
+    return this.attackSpeed * this.damage;
   }
 
   constructParts() {
@@ -84,6 +90,15 @@ class Tower extends GameObject {
     return Vector.distance(tower.tipPosition, minion.position) / tower.projectileSpeed;
   }
 
+  // How much damage the projectile should deal, taking critical hit chance in account.
+  get projectileDamage() {
+    let isCriticalHit = Math.random() < this.criticalHitChance;
+    let damage = this.damage;
+    if (isCriticalHit)
+      damage += 2 * this.damage * this.criticalHitChance;
+    return damage;
+  }
+
   // The position of the tip of the cannon
   get tipPosition() {
     let cannon = this.cannon;
@@ -104,7 +119,7 @@ class Tower extends GameObject {
       return;
     }
     let cannon = tower.cannon;
-    let bullet = new Bullet(this.bulletCount);
+    let bullet = new Bullet(tower.projectileDamage);
     let duration = tower.projectileDuration;
     bullet.animate("localPosition", target, duration, "linear");
     game.addGameObject(bullet);

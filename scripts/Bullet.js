@@ -1,6 +1,7 @@
 class Bullet extends GameObject {
-  constructor(number) {
-    super("Bullet" + number, resources.images.bullet, tower.tipPosition);
+  constructor(damage) {
+    super("Bullet", resources.images.bullet, tower.tipPosition);
     this.tag = "Bullet";
+    this.damage = damage;
   }
 }

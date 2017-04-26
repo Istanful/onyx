@@ -146,12 +146,12 @@ class Minion extends GameObject {
     let bullet = this.findChild("Body").getCollisionWithTag("Bullet");
     if (bullet) {
       bullet.destroy();
-      this.takeDamage();
+      this.takeDamage(bullet.damage);
     }
   }
 
-  takeDamage() {
-    this.health -= tower.damage;
+  takeDamage(damage) {
+    this.health -= damage;
     this.animateHealthBar();
     if (this.health <= 0) {
       this.destroy();
