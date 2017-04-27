@@ -27,6 +27,24 @@ class Game {
     for (let i = 0; i < this.gameObjects.length; i++) {
       this.gameObjects[i].draw();
     }
+    this.drawFloor();
+  }
+
+  get floorYPosition() {
+    // Use towerbase as reference for floor
+    let towerBase = tower.findChild("TowerBase");
+    return towerBase.position.scaled.y + towerBase.size.scaled.y;
+  }
+
+  drawFloor() {
+    let y = this.floorYPosition;
+
+    // Draw the floor
+    let context = this.canvas.getContext("2d");
+    context.beginPath(0, y);
+    context.moveTo(0, y);
+    context.lineTo(window.innerWidth, y);
+    context.stroke();
   }
 
   addGameObject(gameObject) {
