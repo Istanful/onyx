@@ -15,3 +15,9 @@ Array.prototype.max = function () {
   }
   return max;
 }
+
+Array.prototype.find = function(property, value) {
+  for (let i = 0; i < this.length; i++)
+    if (this[i][property] == value)
+      return this[i];
+}

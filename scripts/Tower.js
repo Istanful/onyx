@@ -8,10 +8,30 @@ class Tower extends GameObject {
   }
 
   setStats() {
-    this.attackSpeed = 1;
-    this.damage = 10; // dummy data
-    this.criticalHitChance = 0.2;
+    this.stats = [
+      new Stat("attackSpeed", "lvl / 2 + 1", "lvl * 2"),
+      new Stat("damage", "lvl * 10", "lvl * 10"),
+      new Stat("criticalHitChance", "lvl * 0.2", "lvl * 10")
+    ];
   }
+
+  levelUp(stat) {
+    this.getStat(stat).levelUp();
+  }
+
+  getStat(name) {
+    return this.stats.find("name", name);
+  }
+  getStatPower(name) {
+    return this.getStat(name).power;
+  }
+
+  /* Compability
+  -----------------------------------------------------------------------------------------*/
+  get criticalHitChance() { return this.getStatPower("criticalHitChance"); }
+  get attackSpeed() { return this.getStatPower("attackSpeed"); }
+  get damage() { return this.getStatPower("damage"); }
+  /*---------------------------------------------------------------------------------------*/
 
   get damagePerSecond() {
     return this.attackSpeed * this.damage;
