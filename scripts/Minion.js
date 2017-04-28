@@ -1,7 +1,7 @@
 class Minion extends GameObject {
   constructor(name, localPosition, angle = 0) {
     super(name, false, localPosition, angle);
-    this.localPosition = new Vector(window.innerWidth * (1 / game.scale), this.targetPosition.y);
+
     this.animator = new Animator();
     this.health = 100;
     this.startingHealth = this.health;
@@ -9,6 +9,12 @@ class Minion extends GameObject {
 
     this.constructParts();
     this.walkToEndOfScreen();
+
+    this.localPosition = this.startPosition;
+  }
+
+  get startPosition() {
+    return new Vector(window.innerWidth * (1 / game.scale), this.targetPosition.y);
   }
 
   walkToEndOfScreen() {
@@ -173,6 +179,6 @@ class Minion extends GameObject {
 
   // The position where this minion should die
   get targetPosition() {
-    return new Vector(tower.position.x + 300, 780 - this.size.y);
+    return new Vector(tower.position.x + 300, game.floorYPosition - 168);
   }
 }

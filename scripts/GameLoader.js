@@ -81,6 +81,9 @@ let images = [
 let scripts = [
   "GameObject.js",
   "MinionSpawner.js",
+  "GUIComponent.js",
+  "GUIPanel.js",
+  "Button.js",
   "Stat.js",
   "Number.js",
   "Bullet.js",

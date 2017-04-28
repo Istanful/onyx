@@ -5,3 +5,7 @@ Number.prototype.toRadians = function () {
 Number.prototype.toDegrees = function() {
   return this / (Math.PI / 180);
 }
+
+Number.prototype.toScaled = function() {
+  return this * game.scale;
+}

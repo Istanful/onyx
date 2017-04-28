@@ -28,16 +28,17 @@ class Game {
       this.gameObjects[i].draw();
     }
     this.drawFloor();
+    gui.draw();
   }
 
   get floorYPosition() {
     // Use towerbase as reference for floor
     let towerBase = tower.findChild("TowerBase");
-    return towerBase.position.scaled.y + towerBase.size.scaled.y;
+    return towerBase.position.y + towerBase.size.y;
   }
 
   drawFloor() {
-    let y = this.floorYPosition;
+    let y = this.floorYPosition.toScaled();
 
     // Draw the floor
     let context = this.canvas.getContext("2d");
