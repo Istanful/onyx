@@ -1,9 +1,9 @@
 class GUIPanel {
   constructor() {
     this.GUIComponents = [
-      new Button("(A) Attackspeed", function() { tower.levelUp("attackSpeed"); }, "a"),
-      new Button("(S) Damage", function() { tower.levelUp("damage"); }, "s"),
-      new Button("(D) Critical hit", function() { tower.levelUp("criticalHitChance"); }, "d")
+      new UpgradeButton("Attackspeed", "attackSpeed", "a"),
+      new UpgradeButton("Damage", "damage", "s"),
+      new UpgradeButton("Critical hit", "criticalHitChance", "d")
     ];
     document.addEventListener("keydown", function(e) { gui.triggerComponents(e); });
     document.addEventListener("click", function(e) { gui.clickComponents(e); });
