@@ -31,7 +31,7 @@ class Minion extends GameObject {
   walkToEndOfScreen() {
     let deathPosition =  this.targetPosition;
     let distance = Vector.distance(deathPosition, this.position);
-    let duration = 10000;
+    let duration = Minion.walkDuration;
     let target = new Vector(0 - this.findChild("Body").size.x, deathPosition.y);
     duration += Vector.distance(target, deathPosition) / this.velocity;
     this.animate("localPosition", target, duration, "linear", this.destroy);
@@ -41,6 +41,10 @@ class Minion extends GameObject {
     let distance = Vector.distance(this.targetPosition, this.position);
     let duration = 10000;
     this.velocity = distance / duration;
+  }
+
+  static get walkDuration() {
+    return 10000;
   }
 
   constructParts() {
@@ -167,15 +171,17 @@ class Minion extends GameObject {
   }
 
   handleCollision() {
-    let bullet = this.findChild("Body").getCollisionWithTag("Bullet");
-    if (bullet) {
-      bullet.destroy();
+    let bullets = this.findChild("Body").getCollisionWithTag("Bullet");
+    for (let i = 0; i < bullets.length; i++) {
+      let bullet = bullets[i];
       this.takeDamage(bullet.damage);
+      bullet.destroy();
     }
   }
 
   takeDamage(damage) {
     this.health -= damage;
+    this.queuedDamage -= damage;
     this.animateHealthBar();
     if (this.health <= 0) {
       this.destroy();

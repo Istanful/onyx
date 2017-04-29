@@ -150,13 +150,15 @@ class GameObject {
            && first.position.y <= second.position.y + second.size.y;
   }
 
-  // Returns colliding object with tag if any
+  // Returns colliding objects with tag if any
   getCollisionWithTag(tag) {
     let collision = this.collision;
+    let collidingObjects = [];
     for (let i = 0; i < collision.length; i++) {
       if (collision[i].tag == tag)
-        return collision[i];
+        collidingObjects.push(collision[i]);
     }
+    return collidingObjects;
   }
 
   // The point from where to rotate the object

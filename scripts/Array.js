@@ -28,3 +28,11 @@ Array.prototype.sum = function(property) {
     sum += this[i][property];
   return sum;
 }
+
+Array.prototype.where = function(property, value) {
+  let collection = [];
+  for (let i = 0; i < this.length; i++)
+    if (this[i][property] == value)
+      collection.push(this[i])
+  return collection;
+}

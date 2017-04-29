@@ -11,7 +11,7 @@ class Tower extends GameObject {
     this.stats = [
       new Stat("attackSpeed", "Math.pow(lvl, 3)/100 + 1", "lvl * 2"),
       new Stat("damage", "lvl * 10", "lvl * 10"),
-      new Stat("criticalHitChance", "lvl * 0.2", "lvl * 10")
+      new Stat("criticalHitChance", "lvl * 0", "lvl * 10")
     ];
   }
 
@@ -83,13 +83,11 @@ class Tower extends GameObject {
 
   get targetMinion() {
     // Find the closest minion
-    let minions = game.findGameObjectsWithTag("Enemy");
-    let closest = minions[minions.length - 1];
-
+    let minions = game.findGameObjectsWithTag("Enemy").where("deathMarked", false);
+    let closest = minions[0];
     for (let i = 0; i < minions.length; i++)
-      if (minions[i].position.x < closest.x && !minions[i].deathMarked)
+      if (minions[i].position.x < closest.x)
         closest = minions[i];
-
     return closest;
   }
 
@@ -112,7 +110,7 @@ class Tower extends GameObject {
 
   get projectileDuration() {
     let minion = this.targetMinion;
-    return Vector.distance(tower.tipPosition, minion.position) / tower.projectileSpeed;
+    return Vector.distance(this.tipPosition, minion.position) / 2;
   }
 
   // How much damage the projectile should deal, taking critical hit chance in account.
@@ -121,7 +119,7 @@ class Tower extends GameObject {
     let damage = this.damage / this.attackSpeed;
     if (isCriticalHit)
       damage += 2 * damage * this.criticalHitChance;
-    return damage;
+    return Math.ceil(damage);
   }
 
   // The position of the tip of the cannon
@@ -140,18 +138,17 @@ class Tower extends GameObject {
   shoot() {
     let target = tower.targetPosition;
     let minion = tower.targetMinion;
-
     if (!target) {
       setTimeout(tower.shoot, 1000 / tower.attackSpeed);
       return;
     }
     let cannon = tower.cannon;
     let bullet = new Bullet(tower.projectileDamage);
-    minion.queuedDamage += bullet.damage;
     let duration = tower.projectileDuration;
     bullet.animate("localPosition", target, duration, "linear");
     game.addGameObject(bullet);
     setTimeout(tower.shoot, 1000 / tower.attackSpeed);
+    minion.queuedDamage += bullet.damage;
   }
 
   update() {
