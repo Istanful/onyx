@@ -13,7 +13,8 @@ class MinionSpawner {
   }
 
   static spawnDelay(minionHealth) {
-    let multiplier = [tower.projectileDamage / minionHealth, 1].min();
-    return (1000 / tower.attackSpeed) / multiplier;
+    let numberOfBullets = minionHealth / tower.projectileDamage;
+    let timeNeeded = (1000 / tower.attackSpeed) * numberOfBullets;
+    return timeNeeded;
   }
 }
