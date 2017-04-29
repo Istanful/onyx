@@ -56,8 +56,8 @@ class GUIPanel {
     context.textBaseline = "top";
     let lines = [
       "Money: 9999",
-      "Total level: 9999",
-      "Damage per second: 9999"
+      "Total level: " + tower.powerLevel,
+      "Damage per second: " + Math.round(tower.damagePerSecond)
     ];
 
     for (let i = 0; i < lines.length; i++) {
