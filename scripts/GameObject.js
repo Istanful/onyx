@@ -147,7 +147,7 @@ class GameObject {
 
   static verticallyInBounds(first, second) {
     return first.position.y >= second.position.y
-           && second.position.y <= second.position.y + second.size.y;
+           && first.position.y <= second.position.y + second.size.y;
   }
 
   // Returns colliding object with tag if any
