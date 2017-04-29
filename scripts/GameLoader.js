@@ -83,6 +83,7 @@ let scripts = [
   "MinionSpawner.js",
   "GUIComponent.js",
   "GUIPanel.js",
+  "SaveManager.js",
   "Button.js",
   "Stat.js",
   "Number.js",

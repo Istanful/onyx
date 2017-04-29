@@ -1,3 +1,7 @@
+let save;
+SaveManager.load();
+console.log("wtf duede");
+
 let game = new Game();
 let tower = new Tower(
   "Tower",
