@@ -36,3 +36,7 @@ Array.prototype.where = function(property, value) {
       collection.push(this[i])
   return collection;
 }
+
+Array.randomBetweenOrSingle = function(value) {
+  return Array.isArray(value) ? Number.random(value[0], value[1]) : value;
+}
