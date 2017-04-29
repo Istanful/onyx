@@ -21,3 +21,10 @@ Array.prototype.find = function(property, value) {
     if (this[i][property] == value)
       return this[i];
 }
+
+Array.prototype.sum = function(property) {
+  let sum = 0;
+  for (let i = 0; i < this.length; i++)
+    sum += this[i][property];
+  return sum;
+}

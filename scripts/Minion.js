@@ -3,14 +3,25 @@ class Minion extends GameObject {
     super(name, false, localPosition, angle);
 
     this.animator = new Animator();
-    this.health = 100;
-    this.startingHealth = this.health;
+    this.health = this.startingHealth;
+    this.queuedDamage = 0;
     this.tag = "Enemy";
 
-    this.constructParts();
-    this.walkToEndOfScreen();
 
     this.localPosition = this.startPosition;
+    this.setVelocity();
+    this.constructParts();
+    this.walkToEndOfScreen();
+  }
+
+  // The tower should not shoot at a minion that is already
+  // death marked
+  get deathMarked() {
+    return this.health - this.queuedDamage <= 0;
+  }
+
+  get startingHealth() {
+    return 10 * tower.powerLevel;
   }
 
   get startPosition() {
@@ -20,16 +31,16 @@ class Minion extends GameObject {
   walkToEndOfScreen() {
     let deathPosition =  this.targetPosition;
     let distance = Vector.distance(deathPosition, this.position);
-    let duration = (this.startingHealth / tower.damagePerSecond) * 1000;
+    let duration = 10000;
     let target = new Vector(0 - this.findChild("Body").size.x, deathPosition.y);
     duration += Vector.distance(target, deathPosition) / this.velocity;
     this.animate("localPosition", target, duration, "linear", this.destroy);
   }
 
-  get velocity() {
+  setVelocity() {
     let distance = Vector.distance(this.targetPosition, this.position);
-    let duration = (this.startingHealth / tower.damagePerSecond) * 1000;
-    return distance / duration;
+    let duration = 10000;
+    this.velocity = distance / duration;
   }
 
   constructParts() {

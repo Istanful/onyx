@@ -9,6 +9,11 @@ class MinionSpawner {
     let minion = new Minion("Minion");
     game.addGameObject(minion);
     self.minionCount++;
-    setTimeout(self.spawn, (minion.startingHealth / tower.damagePerSecond) * 1000)
+    setTimeout(self.spawn, MinionSpawner.spawnDelay(minion.startingHealth))
+  }
+
+  static spawnDelay(minionHealth) {
+    let multiplier = [tower.projectileDamage / minionHealth, 1].min();
+    return (1000 / tower.attackSpeed) / multiplier;
   }
 }

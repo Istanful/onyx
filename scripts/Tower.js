@@ -9,7 +9,7 @@ class Tower extends GameObject {
 
   setStats() {
     this.stats = [
-      new Stat("attackSpeed", "lvl / 2 + 1", "lvl * 2"),
+      new Stat("attackSpeed", "Math.pow(lvl, 3)/100 + 1", "lvl * 2"),
       new Stat("damage", "lvl * 10", "lvl * 10"),
       new Stat("criticalHitChance", "lvl * 0.2", "lvl * 10")
     ];
@@ -22,6 +22,7 @@ class Tower extends GameObject {
   getStat(name) {
     return this.stats.find("name", name);
   }
+
   getStatPower(name) {
     return this.getStat(name).power;
   }
@@ -35,6 +36,10 @@ class Tower extends GameObject {
 
   get damagePerSecond() {
     return this.attackSpeed * this.damage;
+  }
+
+  get powerLevel() {
+    return this.stats.sum("level");
   }
 
   constructParts() {
@@ -79,10 +84,10 @@ class Tower extends GameObject {
   get targetMinion() {
     // Find the closest minion
     let minions = game.findGameObjectsWithTag("Enemy");
-    let closest = minions[0];
+    let closest = minions[minions.length - 1];
 
     for (let i = 0; i < minions.length; i++)
-      if (minions[i].position.x < closest.x)
+      if (minions[i].position.x < closest.x && !minions[i].deathMarked)
         closest = minions[i];
 
     return closest;
@@ -113,9 +118,9 @@ class Tower extends GameObject {
   // How much damage the projectile should deal, taking critical hit chance in account.
   get projectileDamage() {
     let isCriticalHit = Math.random() < this.criticalHitChance;
-    let damage = this.damage;
+    let damage = this.damage / this.attackSpeed;
     if (isCriticalHit)
-      damage += 2 * this.damage * this.criticalHitChance;
+      damage += 2 * damage * this.criticalHitChance;
     return damage;
   }
 
@@ -134,16 +139,18 @@ class Tower extends GameObject {
 
   shoot() {
     let target = tower.targetPosition;
+    let minion = tower.targetMinion;
+
     if (!target) {
       setTimeout(tower.shoot, 1000 / tower.attackSpeed);
       return;
     }
     let cannon = tower.cannon;
     let bullet = new Bullet(tower.projectileDamage);
+    minion.queuedDamage += bullet.damage;
     let duration = tower.projectileDuration;
     bullet.animate("localPosition", target, duration, "linear");
     game.addGameObject(bullet);
-    this.bulletCount++;
     setTimeout(tower.shoot, 1000 / tower.attackSpeed);
   }
 
