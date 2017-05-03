@@ -1,5 +1,9 @@
 class GUIPanel {
   constructor() {
+    let upgradeButtonAction = function(stat) {
+      tower.levelUp(stat);
+    };
+
     this.GUIComponents = [
       new UpgradeButton("Attackspeed", "attackSpeed", "a"),
       new UpgradeButton("Damage", "damage", "s"),

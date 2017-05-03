@@ -17,6 +17,8 @@ class Tower extends GameObject {
 
   levelUp(stat) {
     this.getStat(stat).levelUp();
+    // Make sure to save
+    SaveManager.save();
   }
 
   getStat(name) {

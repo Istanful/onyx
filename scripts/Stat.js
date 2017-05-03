@@ -10,7 +10,10 @@ class Stat {
   // You must later pay for stuff
   levelUp() {
     this.level++;
-    let lvl = this.level;
+    this.setLevel(this.level)
+  }
+
+  setLevel(lvl) {
     this.power = eval(this.powerCalculation);
     this.cost = eval(this.costCalculation);
   }

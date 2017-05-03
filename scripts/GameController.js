@@ -7,5 +7,9 @@ let tower = new Tower(
 let spawner = new MinionSpawner();
 let gui = new GUIPanel();
 
+let save;
+SaveManager.load();
+SaveManager.autoSave();
+
 game.addGameObject(tower);
 game.start();
