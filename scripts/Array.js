@@ -40,3 +40,7 @@ Array.prototype.where = function(property, value) {
 Array.randomBetweenOrSingle = function(value) {
   return Array.isArray(value) ? Number.random(value[0], value[1]) : value;
 }
+
+Array.prototype.last = function() {
+  return this[this.length - 1];
+}

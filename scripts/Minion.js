@@ -73,8 +73,11 @@ class Minion extends GameObject {
 
   addAnimations() {
     let walk = this.walkAnimationGroups;
+    let death = this.deathAnimationGroups;
+    let self = this;
     let animatorStates = [
-      new AnimatorState(walk, function() { return true; })
+      new AnimatorState(walk, function() { return self.health > 0; }),
+      new AnimatorState(death, function() { return true; })
     ];
     this.animator.addAnimatorStates(animatorStates);
   }
@@ -143,6 +146,33 @@ class Minion extends GameObject {
     return groups;
   }
 
+  get deathAnimationGroups() {
+    let self = this;
+    let duration = Array.randomBetweenOrSingle([600, 1000]);
+    let side, thigh, calve, foot, arm;
+    let changeSide = function() {
+      side = side == "Left" ? "Right" : "Left";
+      thigh = self.findChild(side + "Thigh");
+      calve = thigh.findChild(side + "Calve");
+      foot = calve.findChild(side + "Foot");
+      arm = self.findChild(side + "Arm");
+    };
+
+    changeSide();
+    let parts = [this.findChild("Body"), thigh, calve, foot, arm];
+    changeSide();
+    parts = parts.concat([thigh, calve, foot, arm]);
+    let animations = [];
+
+    for (let i = 0; i < parts.length; i++) {
+      animations.push(Animation.from(parts[i], "angle", [Array.randomBetweenOrSingle([90, 720]), duration, "easeOut"]));
+      animations.push(VectorAnimation.from(parts[i], "size", [Vector.zero, duration]));
+    }
+    animations[animations.length - 1].callback = function() { self.destroy(); }
+    let group = new AnimationGroup(animations);
+    return [group];
+  }
+
   constructLeg(side) {
     let leg = new GameObject(side + "Thigh",
                                 resources.images.minionThigh,
@@ -187,9 +217,15 @@ class Minion extends GameObject {
     this.queuedDamage -= damage;
     this.animateHealthBar(damage);
 
-    if (this.health <= 0) {
+    if (this.health <= 0){
       this.rewardPlayer();
-      this.destroy();
+      let delta = new Vector(
+        Array.randomBetweenOrSingle([50, 200]),
+        -Array.randomBetweenOrSingle([10, 30])
+      );
+      let target = Vector.add(this.localPosition, delta);
+      let duration = Vector.distance(this.localPosition, target) / tower.projectileSpeed;
+      this.animate("localPosition", target, 600, "easeOut");
     }
   }
 
@@ -200,8 +236,9 @@ class Minion extends GameObject {
   animateHealthBar(damage) {
     let healthBar = this.findChild("HealthBar");
     let duration = 1000  * damage / this.startingHealth;
+    let multiplier = [0, this.health / this.startingHealth].max();
     healthBar.animate("opacity", 1, duration);
-    healthBar.animate("size", new Vector((this.health / this.startingHealth) * 100, 15), duration);
+    healthBar.animate("size", new Vector(multiplier * 100, 15), duration);
   }
 
   // The position where this minion should die

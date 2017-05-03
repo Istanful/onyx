@@ -76,4 +76,8 @@ class VectorAnimation {
   get completionPercentage() {
     return this.elapsedTime / this.duration;
   }
+
+  static from(object, property, keyframe) {
+    return new VectorAnimation(object, property, keyframe[0], keyframe[1], keyframe[2] || "easeIn");
+  }
 }
