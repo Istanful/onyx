@@ -13,7 +13,11 @@ class Vector {
   }
 
   static multiply(first, second) {
-	return new Vector(first.x * second.x, first.y * second.y);
+	   return new Vector(first.x * second.x, first.y * second.y);
+  }
+
+  static divide(first, second) {
+    return new Vector(first.x / second.x, first.y / second.y);
   }
 
   static get zero() {
@@ -34,6 +38,11 @@ class Vector {
   // Returns the same vector scaled to game space
   get scaled() {
 	   return Vector.multiply(this, Vector.withValue(game.scale));
+  }
+
+  // Returns the same vector unscaled
+  get unScaled() {
+    return Vector.multiply(this, Vector.withValue((1 / game.scale)));
   }
 
   // Returns the coordinates with the origin in the bottom left

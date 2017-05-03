@@ -80,6 +80,7 @@ let images = [
 
 let scripts = [
   "GameObject.js",
+  "RectObject.js",
   "Particle.js",
   "MinionSpawner.js",
   "GUIPanel.js",

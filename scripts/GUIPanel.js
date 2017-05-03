@@ -34,6 +34,7 @@ class GUIPanel {
 
     for (let i = 0; i < this.GUIComponents.length; i++) {
       let component = this.GUIComponents[i];
+      context.globalAlpha = component.opacity;
 
       // Stroke component
       context.strokeRect(x, y, width, height);
@@ -50,6 +51,7 @@ class GUIPanel {
 
       x += width + spacerSize;
     }
+    context.globalAlpha = 1
 
     this.displayStatistics(x, y, textHeight);
   }

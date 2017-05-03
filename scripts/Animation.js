@@ -7,6 +7,7 @@ class Animation extends VectorAnimation {
   get nextValue() {
     if (!this.started) { this.start() }
     if (this.elapsedTime >= this.duration) {
+      if (this.callback) { this.callback() };
       this.done = true;
       return this.targetValue;
     }
