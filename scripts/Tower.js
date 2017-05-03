@@ -78,7 +78,7 @@ class Tower extends GameObject {
     let deltaAngle = Math.abs(cannon.angle - angle);
 
     // If the next minion is close enough. No need to animate the rotation
-    if (deltaAngle < 10) { cannon.angle = angle; return; }
+    if (deltaAngle < 2) { cannon.angle = angle; return; }
     if (!cannon.animations["angle"] || cannon.animations["angle"].done)
       cannon.animate("angle", angle, 600);
   }
