@@ -185,7 +185,7 @@ class Minion extends GameObject {
   takeDamage(damage) {
     this.health -= damage;
     this.queuedDamage -= damage;
-    this.animateHealthBar();
+    this.animateHealthBar(damage);
 
     if (this.health <= 0) {
       this.rewardPlayer();
@@ -197,10 +197,11 @@ class Minion extends GameObject {
     save.balance += this.gold;
   }
 
-  animateHealthBar() {
+  animateHealthBar(damage) {
     let healthBar = this.findChild("HealthBar");
-    healthBar.animate("opacity", 1, 200);
-    healthBar.animate("size", new Vector((this.health / this.startingHealth) * 100, 15), 200);
+    let duration = 1000  * damage / this.startingHealth;
+    healthBar.animate("opacity", 1, duration);
+    healthBar.animate("size", new Vector((this.health / this.startingHealth) * 100, 15), duration);
   }
 
   // The position where this minion should die
