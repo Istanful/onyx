@@ -1,7 +1,17 @@
 class SaveManager {
+  static autoSave() {
+    window.addEventListener("onbeforeunload", function(e) {
+      SaveManager.save();
+      (e||window.event).returnValue = null;
+    });
+  }
+
   static load() {
-    save = this.decodeCookie(document.cookie) || SaveManager.newGame;
-    console.log("loaded: " + save);
+    save = this.loadCookie() || SaveManager.newGame;
+    let stats = tower.stats;
+    for (let i = 0; i < stats.length; i++) {
+      stats[i].setLevel(save[stats[i].name]);
+    }
   }
 
   static get newGame() {
@@ -9,27 +19,22 @@ class SaveManager {
   }
 
   static save() {
-    let stats = tower.stats;
-    for (let i = 0; i < stats.length; i++) {
-      save[stats[i].name] = stats[i].level;
-    }
-    document.cookie = SaveManager.encodeCookie(save);
-    return SaveManager.encodeCookie(save);
-  }
-
-  static encodeCookie(object) {
-    let cookie = "";
     let expiryDate = new Date().setYear(2025);
-    console.log(expiryDate)
-    for (let key in object) {
-      cookie += key + "=" + object[key] + ";"
-    }
-    cookie += "expires=" + expiryDate + ";path=/;";
-    return cookie;
+    let stats = tower.stats;
+
+    for (let i = 0; i < stats.length; i++)
+      save[stats[i].name] = stats[i].level;
+
+    for (let key in save)
+      document.cookie = key + "=" + save[key] + ";expires=" + expiryDate + ";path=/;";
   }
 
-  static decodeCookie(cookie) {
+  static loadCookie() {
+    let cookie = document.cookie;
     if (!cookie) { return false; }
+
+    cookie = cookie.replace(/ /g,''); // Remove whitespace
+
     let decodedCookie = {};
     let keyValuePairs = cookie.split(";");
     for (let i = 0; i < keyValuePairs.length; i++) {
