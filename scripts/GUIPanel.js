@@ -59,7 +59,7 @@ class GUIPanel {
     context.textAlign = "start";
     context.textBaseline = "top";
     let lines = [
-      "Money: 9999",
+      "Money: $" + save.balance,
       "Total level: " + tower.powerLevel,
       "Damage per second: " + Math.round(tower.damagePerSecond)
     ];

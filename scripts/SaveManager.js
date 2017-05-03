@@ -43,7 +43,7 @@ class SaveManager {
     let keyValuePairs = cookie.split(";");
     for (let i = 0; i < keyValuePairs.length; i++) {
       let splitPair = keyValuePairs[i].split("=");
-      decodedCookie[splitPair[0]] = splitPair[1];
+      decodedCookie[splitPair[0]] = parseInt(splitPair[1]);
     }
 
     return decodedCookie;

@@ -7,7 +7,6 @@ class Minion extends GameObject {
     this.queuedDamage = 0;
     this.tag = "Enemy";
 
-
     this.localPosition = this.startPosition;
     this.setVelocity();
     this.constructParts();
@@ -22,6 +21,10 @@ class Minion extends GameObject {
 
   get startingHealth() {
     return 10 * tower.powerLevel;
+  }
+
+  get gold() {
+    return 10 * tower.powerLevel; // dummy data
   }
 
   get startPosition() {
@@ -183,9 +186,15 @@ class Minion extends GameObject {
     this.health -= damage;
     this.queuedDamage -= damage;
     this.animateHealthBar();
+
     if (this.health <= 0) {
+      this.rewardPlayer();
       this.destroy();
     }
+  }
+
+  rewardPlayer() {
+    save.balance += this.gold;
   }
 
   animateHealthBar() {
