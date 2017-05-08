@@ -204,6 +204,7 @@ class Minion extends GameObject {
   }
 
   handleCollision() {
+    if (this.health <= 0) { return; }
     let bullets = this.findChild("Body").getCollisionWithTag("Bullet");
     for (let i = 0; i < bullets.length; i++) {
       let bullet = bullets[i];
