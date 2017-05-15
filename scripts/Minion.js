@@ -20,7 +20,7 @@ class Minion extends GameObject {
   }
 
   get startingHealth() {
-    return 10 * tower.powerLevel;
+    return Math.pow(tower.powerLevel, 2) / 120 + 100;
   }
 
   get gold() {

@@ -9,12 +9,13 @@ class MinionSpawner {
     let minion = new Minion("Minion");
     game.addGameObject(minion);
     self.minionCount++;
-    setTimeout(self.spawn, MinionSpawner.spawnDelay(minion.startingHealth))
+    setTimeout(self.spawn, MinionSpawner.spawnDelay(minion))
   }
 
-  static spawnDelay(minionHealth) {
-    let numberOfBullets = minionHealth / tower.projectileDamage;
-    let timeNeeded = (1000 / tower.attackSpeed) * numberOfBullets;
+  static spawnDelay(minion) {
+    let numberOfBullets = minion.startingHealth / tower.projectileBaseDamage;
+    let projectileDuration = (Vector.distance(tower.tipPosition, minion.position)) / tower.projectileSpeed;
+    let timeNeeded = (1000 / tower.attackSpeed) * numberOfBullets + projectileDuration;
     return timeNeeded;
   }
 }

@@ -107,12 +107,12 @@ class Tower extends GameObject {
   }
 
   get projectileSpeed() {
-    return this.attackSpeed; // dummy data
+    return [this.attackSpeed * 2, 3].min();
   }
 
   get projectileDuration() {
     let minion = this.targetMinion;
-    return Vector.distance(this.tipPosition, minion.position) / 2;
+    return Vector.distance(this.tipPosition, minion.position) / this.projectileSpeed;
   }
 
   // How much damage the projectile should deal, taking critical hit chance in account.
