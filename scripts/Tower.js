@@ -9,9 +9,9 @@ class Tower extends GameObject {
 
   setStats() {
     this.stats = [
-      new Stat("attackSpeed", "Math.pow(lvl, 3)/100 + 1", "lvl * 2"),
-      new Stat("damage", "lvl * 10", "lvl * 10"),
-      new Stat("criticalHitChance", "lvl * 0", "lvl * 10")
+      new Stat("attackSpeed", "Math.pow(lvl, 2)/100 + 1", "Math.floor(Math.pow(lvl, 2) + 10)"),
+      new Stat("damage", "Math.pow(lvl, 2)/10 + 10", "Math.floor(Math.pow(lvl, 2) + 10)"),
+      new Stat("criticalHitChance", "Math.pow(lvl, 2)/1000 + 0.2", "Math.floor(Math.pow(lvl, 2) + 10)")
     ];
   }
 
@@ -37,7 +37,7 @@ class Tower extends GameObject {
   /*---------------------------------------------------------------------------------------*/
 
   get damagePerSecond() {
-    return this.attackSpeed * this.damage;
+    return this.attackSpeed * this.projectileBaseDamage;
   }
 
   get powerLevel() {
@@ -118,10 +118,14 @@ class Tower extends GameObject {
   // How much damage the projectile should deal, taking critical hit chance in account.
   get projectileDamage() {
     let isCriticalHit = Math.random() < this.criticalHitChance;
-    let damage = this.damage / this.attackSpeed;
+    let damage = this.projectileBaseDamage;
     if (isCriticalHit)
       damage += 2 * damage * this.criticalHitChance;
     return Math.ceil(damage);
+  }
+
+  get projectileBaseDamage() {
+    return this.damage;
   }
 
   // The position of the tip of the cannon

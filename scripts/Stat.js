@@ -15,6 +15,7 @@ class Stat {
 
   setLevel(lvl) {
     this.level = lvl;
+    let val = this.power;
     this.power = eval(this.powerCalculation);
     this.cost = eval(this.costCalculation);
   }

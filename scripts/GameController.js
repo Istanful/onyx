@@ -1,5 +1,4 @@
 let save;
-
 let game = new Game();
 let tower = new Tower(
   "Tower",
