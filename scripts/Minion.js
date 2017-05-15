@@ -86,7 +86,7 @@ class Minion extends GameObject {
     let side, thigh, calve, foot, arm;
     let groups = [];
     let self = this;
-    let speed = 50 / this.velocity;
+    let speed = 56 / this.velocity;
 
     let changeSide = function() {
       side = side == "Left" ? "Right" : "Left";
